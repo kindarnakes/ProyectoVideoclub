@@ -1,6 +1,6 @@
 package io.VideoClub.Model;
 
-import java.util.HashSet;
+import java.util.TreeSet;
 import java.util.Set;
 
 /**
@@ -15,9 +15,9 @@ public class Data {
     protected Set<Reservation> reservas;
 
     private Data() {
-        this.clientes = new HashSet<>();
-        this.productos = new HashSet<>();
-        this.reservas = new HashSet<>();
+        this.clientes = new TreeSet<>();
+        this.productos = new TreeSet<>();
+        this.reservas = new TreeSet<>();
     }
     
     public static Data getInstance(){
