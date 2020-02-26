@@ -14,7 +14,24 @@ public abstract class Product extends Item implements Cloneable{
     }
     private String key;
     private Status status;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
    
+    
     
     
     public Product(){}
