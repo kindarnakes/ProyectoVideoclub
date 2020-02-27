@@ -14,13 +14,32 @@ public abstract class Product extends Item implements Cloneable{
     }
     private String key;
     private Status status;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
    
     
     
+    
     public Product(){}
-    public Product(String name, String description,double prize){
+    
+    public Product(String name, String description,double prize, Status status){
         super(name,description,prize);
         this.key=generateRandom16Chars();
+        this.status=status;
     }
     
     private String generateRandom16Chars(){
@@ -46,6 +65,12 @@ public abstract class Product extends Item implements Cloneable{
         clone.key=generateRandom16Chars();
         return (Object)clone;
     }
+
+    @Override
+    public String toString() {
+        return super.toString()+" | Producto, numero="+ key + ", estado=" + status;
+    }
+    
     
     
     

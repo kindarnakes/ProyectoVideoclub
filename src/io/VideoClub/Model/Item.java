@@ -12,4 +12,11 @@ public abstract class Item {
         this.description = description;
         this.prize = prize;
     }
+
+    @Override
+    public String toString() {
+       return "Item, nombre="+name+", descripcion="+description+", precio="+prize;
+       
+    }
+    
 }
