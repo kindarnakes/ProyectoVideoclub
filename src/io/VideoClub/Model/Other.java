@@ -11,9 +11,11 @@ package io.VideoClub.Model;
  */
 public class Other extends Product implements Cloneable, Comparable<Other>{
 
-    public Other(String name, String description, double prize) {
-        super(name, description, prize);
+    public Other(String name, String description, double prize, Status status) {
+        super(name, description, prize, status);
     }
+
+    
 
     public String getName() {
         return name;
@@ -41,7 +43,7 @@ public class Other extends Product implements Cloneable, Comparable<Other>{
 
     @Override
     public String toString() {
-        return super.toString() + "Other";
+        return super.toString() + " | Otros";
     }
 
     @Override

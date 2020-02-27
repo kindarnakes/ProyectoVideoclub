@@ -16,10 +16,12 @@ public class Movie extends Product implements Cloneable, Comparable<Movie> {
 
     private MovieCategory category;
 
-    public Movie(String name, String description, double prize, MovieCategory category) {
-        super(name, description, prize);
+    public Movie(String name, String description, double prize, Status status, MovieCategory category) {
+        super(name, description, prize, status);
         this.category=category;
     }
+
+    
 
   
  
@@ -60,7 +62,7 @@ public class Movie extends Product implements Cloneable, Comparable<Movie> {
 
     @Override
     public String toString() {
-        return super.toString() + "Movie{" + "category=" + category + '}';
+        return super.toString() + " | Pelicula, categoria=" + category;
     }
 
     @Override

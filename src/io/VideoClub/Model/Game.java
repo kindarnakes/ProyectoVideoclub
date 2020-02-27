@@ -15,11 +15,12 @@ public class Game extends Product implements Cloneable, Comparable<Game> {
 
     private GameCategory category;
 
-    public Game(String name, String description, double prize, GameCategory category) {
-        super(name, description, prize);
+    public Game(String name, String description, double prize, Status status, GameCategory category) {
+        super(name, description, prize, status);
         this.category = category;
-
     }
+
+    
 
     public GameCategory getCategory() {
         return category;
@@ -55,7 +56,7 @@ public class Game extends Product implements Cloneable, Comparable<Game> {
 
     @Override
     public String toString() {
-        return super.toString() + "Game{" + "category=" + category + '}';
+        return super.toString() + " | Juego, categoria=" + category;
     }
 
     @Override
