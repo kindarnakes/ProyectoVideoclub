@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -169,12 +170,37 @@ public class AppController implements IAppController {
 
     @Override
     public boolean removeClient(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean result = false;
+        Set<IClient> A = Data.getInstance().getClientes();
+        for (IClient a : A) {
+            if (a.getID() == id) {
+                A.remove(a);
+                result = true;
+                break;
+            }
+
+        }
+
+        return result;
     }
 
     @Override
     public boolean editClient(IClient e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean result = false;
+        Set<IClient> A = Data.getInstance().getClientes();
+        if (A.contains(e)) {
+
+            Scanner teclado = new Scanner(System.in);
+            System.out.println(e);
+            System.out.println("introduzca  nuevo nombre");
+            String n = teclado.nextLine();
+            System.out.println("introduzca nuevo telefono");
+            String t = teclado.nextLine();
+
+            e = new Client(n, t);
+            result = true;
+        }
+        return result;
     }
 
     @Override

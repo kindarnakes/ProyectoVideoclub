@@ -99,7 +99,7 @@ public String GenerateId(){
 
     @Override
     public String toString() {
-        return "Client{" + "iD=" + iD + ", name=" + name + ", phone=" + phone + ", time=" + time + '}';
+        return "iD=" +   iD + " name=" +   name + " phone=" +   phone + " time=" +   time + '}';
     }
     
 }
