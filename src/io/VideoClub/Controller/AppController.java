@@ -5,24 +5,42 @@
  */
 package io.VideoClub.Controller;
 
+import io.VideoClub.Model.Client;
+import io.VideoClub.Model.Data;
 import io.VideoClub.Model.Enums.GameCategory;
 import io.VideoClub.Model.Enums.MovieCategory;
 import io.VideoClub.Model.Enums.ProductsTypes;
 import io.VideoClub.Model.IClient;
 import io.VideoClub.Model.Product;
 import io.VideoClub.Model.Reservation;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  *
  * @author Ángel Serrano García
  */
-public class AppController implements IAppController{
+public class AppController implements IAppController {
 
     @Override
     public Set<Product> listAllProducts() {
@@ -196,7 +214,38 @@ public class AppController implements IAppController{
 
     @Override
     public boolean loadClientsFromDDBB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean loaded = false;
+
+        Data data = Data.getInstance();
+        data.getClientes().clear();
+
+        try {
+            File file = new File(clientsDDBB);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder;
+            dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(file);
+
+            doc.getDocumentElement().normalize();
+            NodeList nList = doc.getElementsByTagName("Client");
+            for (int i = 0; i < nList.getLength(); i++) {
+                Node nNode = nList.item(i);
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element eElement = (Element) nNode;
+                    String id = eElement.getElementsByTagName("id").item(0).getTextContent();
+                    String name = eElement.getElementsByTagName("name").item(0).getTextContent();
+                    String phone = eElement.getElementsByTagName("phone").item(0).getTextContent();
+                    LocalDateTime born = LocalDateTime.parse(eElement.getElementsByTagName("born_date").item(0).getTextContent());
+                    Client c = new Client(id, name, phone, born);
+                    data.getClientes().add(c);
+                }
+            }
+            loaded = true;
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
+            System.out.println(ex);
+        }
+        return loaded;
+
     }
 
     @Override
@@ -216,7 +265,58 @@ public class AppController implements IAppController{
 
     @Override
     public boolean saveClientsFromDDBB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean saved = false;
+
+        try {
+            Data data = Data.getInstance();
+            DocumentBuilderFactory dFact = DocumentBuilderFactory.newInstance();
+            DocumentBuilder build;
+
+            build = dFact.newDocumentBuilder();
+
+            org.w3c.dom.Document doc = build.newDocument();
+
+            Element root = doc.createElement("Clients");
+
+            data.getClientes().stream().map((c) -> {
+                Element con = doc.createElement("Client");
+                Element id = doc.createElement("id");
+                id.appendChild(doc.createTextNode(c.getID()));
+                con.appendChild(id);
+                Element name = doc.createElement("name");
+                name.appendChild(doc.createTextNode(c.getName()));
+                con.appendChild(name);
+                Element phone = doc.createElement("phone");
+                phone.appendChild(doc.createTextNode(c.getPhone()));
+                con.appendChild(phone);
+                Element born = doc.createElement("born_date");
+                born.appendChild(doc.createTextNode(String.valueOf(c.getTime())));
+                con.appendChild(born);
+                return con;
+            }).forEachOrdered((con) -> {
+                root.appendChild(con);
+            });
+            doc.appendChild(root);
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+
+            transformer.setOutputProperty(
+                    "{http://xml.apache.org/xslt}indent-amount", "4");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(new File(clientsDDBB));
+
+            transformer.transform(source, result);
+            saved = true;
+        } catch (TransformerException | ParserConfigurationException ex) {
+            System.out.println(ex);
+        }
+
+        return saved;
     }
 
     @Override
@@ -228,5 +328,5 @@ public class AppController implements IAppController{
     public boolean saveAllDDBB() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

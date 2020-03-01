@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Clients>
+    <Client>
+        <id>2</id>
+        <name>4</name>
+        <phone>02</phone>
+        <born_date>2020-03-01T15:30:04.615</born_date>
+    </Client>
+    <Client>
+        <id>3</id>
+        <name>1</name>
+        <phone>01</phone>
+        <born_date>2020-03-01T15:30:04.606</born_date>
+    </Client>
+</Clients>

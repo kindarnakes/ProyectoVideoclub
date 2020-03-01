@@ -1,6 +1,6 @@
 package io.VideoClub.View;
 
-import io.VideoClub.Model.Client;
+import io.VideoClub.Model.IClient;
 import io.VideoClub.Model.Item;
 import io.VideoClub.Model.Reservation;
 import java.util.Set;
@@ -17,9 +17,9 @@ public class GUIData {
         });
     }
 
-    public static void clientToScreen(Set<Client> s) {
+    public static void clientToScreen(Set<IClient> s) {
         s.forEach((client) -> {
-            //GUIClient ....
+            //System.out.println(client);
         });
     }
     public static void ReservationToScreen(Set<Reservation> s) {
