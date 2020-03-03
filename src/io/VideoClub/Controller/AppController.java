@@ -13,6 +13,7 @@ import io.VideoClub.Model.Enums.ProductsTypes;
 import io.VideoClub.Model.IClient;
 import io.VideoClub.Model.Product;
 import io.VideoClub.Model.Reservation;
+import io.VideoClub.View.UIUtilities;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -173,9 +174,9 @@ public class AppController implements IAppController {
         boolean result = false;
         Set<IClient> A = Data.getInstance().getClientes();
         for (IClient a : A) {
-            if (a.getID() == id) {
-                A.remove(a);
-                result = true;
+            if (a.getID().equals(id)) {
+                
+                result =  A.remove(a);
                 break;
             }
 
@@ -190,14 +191,13 @@ public class AppController implements IAppController {
         Set<IClient> A = Data.getInstance().getClientes();
         if (A.contains(e)) {
 
-            Scanner teclado = new Scanner(System.in);
-            System.out.println(e);
-            System.out.println("introduzca  nuevo nombre");
-            String n = teclado.nextLine();
-            System.out.println("introduzca nuevo telefono");
-            String t = teclado.nextLine();
 
-            e = new Client(n, t);
+
+            e.setName(UIUtilities.getString("Nuevo nombre"));
+            e.setPhone(UIUtilities.getString("Nuevo telefono"));
+            String fecha = UIUtilities.getString("Fecha de nacimiento [yyyy/mm/dd]");
+            LocalDateTime time = LocalDateTime.parse(fecha);
+            e.setTime(time);
             result = true;
         }
         return result;

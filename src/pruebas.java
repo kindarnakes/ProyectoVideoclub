@@ -21,16 +21,18 @@ public class pruebas {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        /*Client c = new Client("3", "1", "01", LocalDateTime.now());*/
+        Client c = new Client("3", "1", "01", LocalDateTime.now());
         Data data = Data.getInstance();
-        /*data.getClientes().add(c);
+        data.getClientes().add(c);
         c = new Client("2", "4", "02", LocalDateTime.now());
-        data.getClientes().add(c);*/
+        data.getClientes().add(c);
+        
         
         AppController controller = new AppController();
         controller.loadClientsFromDDBB();
         GUIData.clientToScreen(data.getClientes());
         //controller.saveClientsFromDDBB();
+        
     }
     
 }
