@@ -193,17 +193,7 @@ public class AppController implements IAppController {
 
             e.setName(UIUtilities.getString("Nuevo nombre"));
             e.setPhone(UIUtilities.getString("Nuevo telefono"));
-            while (!result) {
-                try {
-                    String fecha = UIUtilities.getString("Fecha de nacimiento [yyyy/mm/dd]") + " 00:00";
-                    DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
-                    LocalDateTime time = LocalDateTime.parse(fecha, format);
-                    e.setTime(time);
-                    result = true;
-                } catch (Exception ex) {
-                    System.out.println("Fecha no correcta");
-                }
-            }
+            e.setTime(UIUtilities.getDate("Fecha de nacimiento [yyyy/mm/dd]", "yyyy/MM/dd"));
         }
         return result;
     }

@@ -1,5 +1,7 @@
 package io.VideoClub.View;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class UIUtilities {
@@ -134,6 +136,23 @@ public class UIUtilities {
     public static void clearScreen() {
         System.out.print("\n\n\n\n\n\n\n\n\n\n");
         System.out.flush();
+    }
+    
+    public static LocalDateTime getDate(String s, String parsed){
+        boolean result = false;
+        LocalDateTime time = null;
+        
+        while (!result) {
+                try {
+                    String fecha = UIUtilities.getString(s) + " 00:00";
+                    DateTimeFormatter format = DateTimeFormatter.ofPattern(parsed + " HH:mm");
+                    time = LocalDateTime.parse(fecha, format);
+                    result = true;
+                } catch (Exception ex) {
+                    System.out.println("Fecha no correcta");
+                }
+            }
+        return time;
     }
 
 }
