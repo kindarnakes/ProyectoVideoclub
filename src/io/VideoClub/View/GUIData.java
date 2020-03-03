@@ -19,7 +19,7 @@ public class GUIData {
 
     public static void clientToScreen(Set<IClient> s) {
         s.forEach((client) -> {
-            //System.out.println(client);
+            GUIClient.showClient(client);
         });
     }
     public static void ReservationToScreen(Set<Reservation> s) {
