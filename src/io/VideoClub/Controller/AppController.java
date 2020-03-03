@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -174,8 +175,8 @@ public class AppController implements IAppController {
         Set<IClient> A = Data.getInstance().getClientes();
         for (IClient a : A) {
             if (a.getID().equals(id)) {
-                
-                result =  A.remove(a);
+
+                result = A.remove(a);
                 break;
             }
 
@@ -190,14 +191,19 @@ public class AppController implements IAppController {
         Set<IClient> A = Data.getInstance().getClientes();
         if (A.contains(e)) {
 
-
-
             e.setName(UIUtilities.getString("Nuevo nombre"));
             e.setPhone(UIUtilities.getString("Nuevo telefono"));
-            String fecha = UIUtilities.getString("Fecha de nacimiento [yyyy/mm/dd]");
-            LocalDateTime time = LocalDateTime.parse(fecha);
-            e.setTime(time);
-            result = true;
+            while (!result) {
+                try {
+                    String fecha = UIUtilities.getString("Fecha de nacimiento [yyyy/mm/dd]") + " 00:00";
+                    DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+                    LocalDateTime time = LocalDateTime.parse(fecha, format);
+                    e.setTime(time);
+                    result = true;
+                } catch (Exception ex) {
+                    System.out.println("Fecha no correcta");
+                }
+            }
         }
         return result;
     }

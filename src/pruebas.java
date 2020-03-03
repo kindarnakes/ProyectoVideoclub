@@ -29,7 +29,7 @@ public class pruebas {
         
         
         AppController controller = new AppController();
-        controller.loadClientsFromDDBB();
+        //controller.loadClientsFromDDBB();
         GUIData.clientToScreen(data.getClientes());
         controller.editClient(c);
         GUIData.clientToScreen(data.getClientes());
