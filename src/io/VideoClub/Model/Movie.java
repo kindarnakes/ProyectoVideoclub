@@ -5,28 +5,26 @@
  */
 package io.VideoClub.Model;
 
-
 import io.VideoClub.Model.Enums.MovieCategory;
+import io.VideoClub.Model.Enums.ProductsTypes;
 
 /**
  *
  * @author Santos
  */
-public class Movie extends Product implements Cloneable, Comparable<Movie> {
+public class Movie extends Product implements Cloneable{
 
     private MovieCategory category;
 
     public Movie(String name, String description, double prize, Status status, MovieCategory category) {
-        super(name, description, prize, status);
-        this.category=category;
+        super(name, description, prize, status, ProductsTypes.Peliculas);
+        this.category = category;
     }
 
-    
-
-  
- 
-
-   
+    public Movie(MovieCategory category, String key, Status status, ProductsTypes type, String name, String description, double prize) {
+        super(key, status, type, name, description, prize);
+        this.category = category;
+    }
 
     public MovieCategory getCategory() {
         return category;
@@ -36,33 +34,39 @@ public class Movie extends Product implements Cloneable, Comparable<Movie> {
         this.category = category;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
 
+    @Override
     public void setDescription(String description) {
         this.description = description;
     }
 
+    @Override
     public double getPrize() {
         return prize;
     }
 
+    @Override
     public void setPrize(double prize) {
         this.prize = prize;
     }
 
     @Override
     public String toString() {
-        return super.toString() + " | Pelicula, categoria=" + category;
+        return "Pelicula, categoria=" + category + "| " + super.toString();
     }
 
     @Override
@@ -89,15 +93,5 @@ public class Movie extends Product implements Cloneable, Comparable<Movie> {
         return super.clone();
     }
 
-    @Override
-    public int compareTo(Movie t) {
-        return this.getKey().compareTo(t.getKey());
-    }
-   
-   
-   
-   
-   
-   
 
 }

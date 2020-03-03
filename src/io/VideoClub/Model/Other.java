@@ -5,45 +5,57 @@
  */
 package io.VideoClub.Model;
 
+import io.VideoClub.Model.Enums.ProductsTypes;
+
 /**
  *
  * @author Santos
  */
-public class Other extends Product implements Cloneable, Comparable<Other>{
+public class Other extends Product implements Cloneable{
 
     public Other(String name, String description, double prize, Status status) {
-        super(name, description, prize, status);
+        super(name, description, prize, status, ProductsTypes.Otros);
+    }
+
+    public Other(String key, Status status, ProductsTypes type, String name, String description, double prize) {
+        super(key, status, type, name, description, prize);
     }
 
     
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
 
+    @Override
     public void setDescription(String description) {
         this.description = description;
     }
 
+    @Override
     public double getPrize() {
         return prize;
     }
 
+    @Override
     public void setPrize(double prize) {
         this.prize = prize;
     }
 
     @Override
     public String toString() {
-        return super.toString() + " | Otros";
+        return "Otros| " + super.toString();
     }
 
     @Override
@@ -70,10 +82,5 @@ public class Other extends Product implements Cloneable, Comparable<Other>{
         return super.clone();
     }
 
-
-    @Override
-    public int compareTo(Other t) {
-        return this.getKey().compareTo(t.getKey());
-    }
 
 }

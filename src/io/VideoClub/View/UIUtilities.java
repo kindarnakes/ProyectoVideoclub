@@ -137,7 +137,12 @@ public class UIUtilities {
         System.out.print("\n\n\n\n\n\n\n\n\n\n");
         System.out.flush();
     }
-    
+    /**
+     * Recoge una fecha como string y la devuelve como LocalDateTime 
+     * @param s String a mostrar por pantalla
+     * @param parsed formato en el que se debe insertar la fecha
+     * @return Fecha correcta
+     */
     public static LocalDateTime getDate(String s, String parsed){
         boolean result = false;
         LocalDateTime time = null;
