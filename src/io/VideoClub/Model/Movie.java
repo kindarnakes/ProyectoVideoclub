@@ -7,6 +7,7 @@ package io.VideoClub.Model;
 
 
 import io.VideoClub.Model.Enums.MovieCategory;
+import io.VideoClub.Model.Enums.ProductsTypes;
 
 /**
  *
@@ -16,10 +17,12 @@ public class Movie extends Product implements Cloneable, Comparable<Movie> {
 
     private MovieCategory category;
 
-    public Movie(String name, String description, double prize, Status status, MovieCategory category) {
-        super(name, description, prize, status);
+    public Movie(String name, String description, double prize, Status status, ProductsTypes tipo, MovieCategory category) {
+        super(name, description, prize, status, tipo);
         this.category=category;
     }
+
+    
 
     
 

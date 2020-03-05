@@ -5,17 +5,17 @@
  */
 package io.VideoClub.Model;
 
+import io.VideoClub.Model.Enums.ProductsTypes;
+
 /**
  *
  * @author Santos
  */
 public class Other extends Product implements Cloneable, Comparable<Other>{
 
-    public Other(String name, String description, double prize, Status status) {
-        super(name, description, prize, status);
+    public Other(String name, String description, double prize, Status status, ProductsTypes tipo) {
+        super(name, description, prize, status, tipo);
     }
-
-    
 
     public String getName() {
         return name;
@@ -40,6 +40,12 @@ public class Other extends Product implements Cloneable, Comparable<Other>{
     public void setPrize(double prize) {
         this.prize = prize;
     }
+
+    
+
+    
+
+    
 
     @Override
     public String toString() {
