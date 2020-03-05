@@ -33,7 +33,6 @@ public abstract class Product extends Item implements Cloneable, Comparable<Obje
     public void setStatus(Status status) {
         this.status = status;
     }
-
     public Product() {
     }
 
@@ -124,5 +123,4 @@ public abstract class Product extends Item implements Cloneable, Comparable<Obje
 
         return -1;
     }
-
 }
