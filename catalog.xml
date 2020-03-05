@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Products>
+    <Movie>
+        <movie_category>Horror</movie_category>
+        <name>movie</name>
+        <description>2</description>
+        <prize>0.0</prize>
+        <status>AVAILABLE</status>
+        <key>73dacee1-06f4-4a</key>
+    </Movie>
+    <Game>
+        <game_category>Cars</game_category>
+        <name>game</name>
+        <description>1</description>
+        <prize>0.0</prize>
+        <status>AVAILABLE</status>
+        <key>2fa01ad7-cb23-41</key>
+    </Game>
+    <Other>
+        <name>other</name>
+        <description>3</description>
+        <prize>0.0</prize>
+        <status>AVAILABLE</status>
+        <key>18ff26e0-c1a9-4b</key>
+    </Other>
+</Products>

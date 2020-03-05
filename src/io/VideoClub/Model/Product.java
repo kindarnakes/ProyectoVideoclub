@@ -8,14 +8,15 @@ package io.VideoClub.Model;
 import io.VideoClub.Model.Enums.ProductsTypes;
 import java.util.UUID;
 
-public abstract class Product extends Item implements Cloneable{
-    public enum Status{
+public abstract class Product extends Item implements Cloneable, Comparable<Object> {
+
+    public enum Status {
         AVAILABLE,
         RESERVED
     }
     private String key;
     private Status status;
-    private ProductsTypes tipo;
+    private ProductsTypes type;
 
     public String getKey() {
         return key;
@@ -32,38 +33,34 @@ public abstract class Product extends Item implements Cloneable{
     public void setStatus(Status status) {
         this.status = status;
     }
-   
-    
-    
-    
-    public Product(){}
-    
-    public Product(String name, String description,double prize, Status status, ProductsTypes tipo){
-        super(name,description,prize);
-        this.key=generateRandom16Chars();
-        this.status=status;
-        this.tipo=tipo;
+    public Product() {
     }
 
-    public ProductsTypes getTipo() {
-        return tipo;
+    public Product(String key, Status status, ProductsTypes type, String name, String description, double prize) {
+        super(name, description, prize);
+        this.key = key;
+        this.status = status;
+        this.type = type;
     }
 
-    public void setTipo(ProductsTypes tipo) {
-        this.tipo = tipo;
+    public Product(String name, String description, double prize, Status status, ProductsTypes type) {
+        super(name, description, prize);
+        this.key = generateRandom16Chars();
+        this.status = status;
+        this.type = type;
     }
-    
-    private String generateRandom16Chars(){
-        return(String)UUID.randomUUID().toString().subSequence(0, 16);
+
+    private String generateRandom16Chars() {
+        return (String) UUID.randomUUID().toString().subSequence(0, 16);
     }
-    
-    public boolean equals(Object o){
-        boolean result=false;
-        if(o!=null){
-            if(o instanceof Product){
-                Product other=(Product)o;
-                if(other.key.equals(other.key)){
-                    result=true;
+
+    public boolean equals(Object o) {
+        boolean result = false;
+        if (o != null) {
+            if (o instanceof Product) {
+                Product other = (Product) o;
+                if (other.key.equals(other.key)) {
+                    result = true;
                 }
             }
         }
@@ -72,14 +69,14 @@ public abstract class Product extends Item implements Cloneable{
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        Product clone=(Product)super.clone(); //To change body of generated methods, choose Tools | Templates.
-        clone.key=generateRandom16Chars();
-        return (Object)clone;
+        Product clone = (Product) super.clone(); //To change body of generated methods, choose Tools | Templates.
+        clone.key = generateRandom16Chars();
+        return (Object) clone;
     }
 
     @Override
     public String toString() {
-        return super.toString()+" | Producto, numero="+ key + ", estado=" + status;
+        return super.toString() + " | numero=" + key + ", estado=" + status;
     }
 
     public String getName() {
@@ -105,9 +102,25 @@ public abstract class Product extends Item implements Cloneable{
     public void setPrize(double prize) {
         this.prize = prize;
     }
-    
-    
-    
-    
-    
+
+    public ProductsTypes getType() {
+        return type;
+    }
+
+    public void setType(ProductsTypes type) {
+        this.type = type;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+
+        if (o == this) {
+            return 0;
+        }
+        if (o instanceof Product) {
+            return ((Product) o).getKey().compareTo(this.getKey());
+        }
+
+        return -1;
+    }
 }

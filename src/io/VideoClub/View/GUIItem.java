@@ -5,14 +5,14 @@
  */
 package io.VideoClub.View;
 
-import io.VideoClub.Model.Item;
+import io.VideoClub.Model.Product;
 
 /**
  *
  * @author Santos
  */
 public class GUIItem {
-     static public void Show(Item o){
+     static public void Show(Product o){
         System.out.println(o);
         
     }
