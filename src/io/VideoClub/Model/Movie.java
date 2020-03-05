@@ -12,18 +12,34 @@ import io.VideoClub.Model.Enums.ProductsTypes;
  *
  * @author Santos
  */
-public class Movie extends Product implements Cloneable{
+public class Movie extends Product implements Cloneable {
 
     private MovieCategory category;
+    private int minAge;
 
     public Movie(String name, String description, double prize, Status status, MovieCategory category) {
         super(name, description, prize, status, ProductsTypes.Peliculas);
         this.category = category;
     }
 
-    public Movie(MovieCategory category, String key, Status status, ProductsTypes type, String name, String description, double prize) {
+    public Movie(MovieCategory category, int minAge, String name, String description, double prize, Status status, ProductsTypes type) {
+        super(name, description, prize, status, type);
+        this.category = category;
+        this.minAge = minAge;
+    }
+
+    public Movie(MovieCategory category, String key, Status status, ProductsTypes type, String name, String description, double prize, int minAge) {
         super(key, status, type, name, description, prize);
         this.category = category;
+        this.minAge = minAge;
+    }
+
+    public int getMinAge() {
+        return minAge;
+    }
+
+    public void setMinAge(int minAge) {
+        this.minAge = minAge;
     }
 
     public MovieCategory getCategory() {
@@ -66,7 +82,7 @@ public class Movie extends Product implements Cloneable{
 
     @Override
     public String toString() {
-        return "Pelicula, categoria=" + category + "| " + super.toString();
+        return "Pelicula, categoria=" + category + " ,edad minima= " + this.minAge + "| " + super.toString();
     }
 
     @Override
@@ -74,12 +90,12 @@ public class Movie extends Product implements Cloneable{
         boolean result = false;
         if (o != null) {
             if (this == o) {
+                result = true;
+            } else {
                 if (o instanceof Movie) {
-                    Movie aux = (Movie) o;
                     if (super.equals(o)) {
                         result = true;
                     }
-
                 }
 
             }
@@ -92,6 +108,5 @@ public class Movie extends Product implements Cloneable{
     protected Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
-
 
 }

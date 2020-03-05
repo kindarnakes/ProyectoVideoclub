@@ -12,7 +12,6 @@ import io.VideoClub.Model.Enums.MovieCategory;
 import io.VideoClub.Model.Enums.ProductsTypes;
 import io.VideoClub.Model.Game;
 import io.VideoClub.Model.IClient;
-import io.VideoClub.Model.Item;
 import io.VideoClub.Model.Movie;
 import io.VideoClub.Model.Other;
 import io.VideoClub.Model.Product;
@@ -23,7 +22,6 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -77,7 +75,7 @@ public class AppController implements IAppController {
         Set<Product> aux = new TreeSet<>();
 
         data.forEach((lista) -> {
-            if (lista.getTipo() == type) {
+            if (lista.getType() == type) {
                 aux.add(lista);
 
             }
@@ -106,7 +104,7 @@ public class AppController implements IAppController {
         Set<Product> data = Data.getInstance().getProductos();
         Set<Product> aux = new TreeSet<>();
         for (Product lista : data) {
-            if (lista.getTipo() == type && lista.getName().equals(name)) {
+            if (lista.getType() == type && lista.getName().equals(name)) {
                 aux.add(lista);
             }
 
@@ -169,51 +167,43 @@ public class AppController implements IAppController {
     @Override
     public Map<Product, Integer> listAllAmountOfProducts(String name) {
         Set<Product> data = Data.getInstance().getProductos();
-        int n=0;
-        Product p1=null;
-        TreeMap <Product,Integer> aux=new TreeMap<>();
-        
-        for(Product p:data){
-            if(p.getName().equals(name)){
-                if(p1==null){
-                    p1=p;
+        int n = 0;
+        Product p1 = null;
+        TreeMap<Product, Integer> aux = new TreeMap<>();
+
+        for (Product p : data) {
+            if (p.getName().equals(name)) {
+                if (p1 == null) {
+                    p1 = p;
                 }
                 n++;
-                
-                
-                
+
             }
         }
-         aux.put(p1, n);
-         return aux;
-        
-        
-        
-        
+        aux.put(p1, n);
+        return aux;
 
     }
 
     @Override
     public Map<Product, Integer> listAllAmountOfProducts(ProductsTypes type, String name) {
         Set<Product> data = Data.getInstance().getProductos();
-        int n=0;
-        Product p1=null;
-        TreeMap <Product,Integer> aux=new TreeMap<>();
-        
-        for(Product p:data){
-            if(p.getName().equals(name) && p.getTipo()==type){
-                if(p1==null){
-                    p1=p;
+        int n = 0;
+        Product p1 = null;
+        TreeMap<Product, Integer> aux = new TreeMap<>();
+
+        for (Product p : data) {
+            if (p.getName().equals(name) && p.getType() == type) {
+                if (p1 == null) {
+                    p1 = p;
                 }
                 n++;
-                
-                
-                
+
             }
         }
-         aux.put(p1, n);
-         return aux;
-        
+        aux.put(p1, n);
+        return aux;
+
     }
 
     @Override
@@ -286,17 +276,24 @@ public class AppController implements IAppController {
 
     @Override
     public boolean createProduct(String name, String description, double prize) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Other o = new Other(name, Product.Status.AVAILABLE, ProductsTypes.Otros, name, description, prize);
+
+        return Data.getInstance().getProductos().add(o);
+
     }
 
     @Override
-    public boolean createMovie(ProductsTypes type, String name, String description, MovieCategory cat, int minAge) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean createMovie(ProductsTypes type, String name, String description, MovieCategory cat, int minAge, double prize) {
+        Movie m = new Movie(cat, minAge, name, description, prize, Product.Status.AVAILABLE, type);
+        
+        return Data.getInstance().getProductos().add(m);
     }
 
     @Override
-    public boolean createGame(ProductsTypes type, String name, String description, GameCategory cat, int minAge) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean createGame(ProductsTypes type, String name, String description, GameCategory cat, int minAge, double prize) {
+        Game g = new Game(cat, minAge, name, description, prize, Product.Status.RESERVED, type);
+        
+        return Data.getInstance().getProductos().add(g);
     }
 
     @Override
@@ -388,6 +385,7 @@ public class AppController implements IAppController {
                     Element eElement = (Element) nNode;
 
                     String movie_category = eElement.getElementsByTagName("movie_category").item(0).getTextContent();
+                    String minAge = eElement.getElementsByTagName("min_age").item(0).getTextContent();
                     String name = eElement.getElementsByTagName("name").item(0).getTextContent();
                     String description = eElement.getElementsByTagName("description").item(0).getTextContent();
                     String prize = eElement.getElementsByTagName("prize").item(0).getTextContent();
@@ -424,7 +422,7 @@ public class AppController implements IAppController {
                             statusfilm = null;
                     }
 
-                    data.getProductos().add(new Movie(category, key, statusfilm, ProductsTypes.Peliculas, name, description, Double.valueOf(prize)));
+                    data.getProductos().add(new Movie(category, key, statusfilm, ProductsTypes.Peliculas, name, description, Double.valueOf(prize), Integer.parseInt(minAge)));
 
                 }
 
@@ -436,6 +434,7 @@ public class AppController implements IAppController {
                     Element eElement = (Element) nNode;
 
                     String game_category = eElement.getElementsByTagName("game_category").item(0).getTextContent();
+                    String minAge = eElement.getElementsByTagName("min_age").item(0).getTextContent();
                     String name = eElement.getElementsByTagName("name").item(0).getTextContent();
                     String description = eElement.getElementsByTagName("description").item(0).getTextContent();
                     String prize = eElement.getElementsByTagName("prize").item(0).getTextContent();
@@ -469,7 +468,7 @@ public class AppController implements IAppController {
                             statusgame = null;
                     }
 
-                    data.getProductos().add(new Game(category, key, statusgame, ProductsTypes.Juegos, name, description, Double.valueOf(prize)));
+                    data.getProductos().add(new Game(category, key, statusgame, ProductsTypes.Juegos, name, description, Double.valueOf(prize), Integer.parseInt(minAge)));
 
                 }
 
@@ -581,6 +580,9 @@ public class AppController implements IAppController {
                     Element category = doc.createElement("movie_category");
                     category.appendChild(doc.createTextNode((String.valueOf(m.getCategory()))));
                     con.appendChild(category);
+                    Element minAge = doc.createElement("min_age");
+                    minAge.appendChild(doc.createTextNode(String.valueOf(m.getMinAge())));
+                    con.appendChild(minAge);
 
                 } else if (c instanceof Game) {
                     Game g = (Game) c;
@@ -588,6 +590,9 @@ public class AppController implements IAppController {
                     Element category = doc.createElement("game_category");
                     category.appendChild(doc.createTextNode((String.valueOf(g.getCategory()))));
                     con.appendChild(category);
+                    Element minAge = doc.createElement("min_age");
+                    minAge.appendChild(doc.createTextNode(String.valueOf(g.getMinAge())));
+                    con.appendChild(minAge);
 
                 } else {
                     con = doc.createElement("Other");

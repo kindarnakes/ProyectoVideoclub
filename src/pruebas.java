@@ -4,6 +4,7 @@ import io.VideoClub.Model.Client;
 import io.VideoClub.Model.Data;
 import io.VideoClub.Model.Enums.GameCategory;
 import io.VideoClub.Model.Enums.MovieCategory;
+import io.VideoClub.Model.Enums.ProductsTypes;
 import io.VideoClub.Model.Game;
 import io.VideoClub.Model.Movie;
 import io.VideoClub.Model.Other;
@@ -29,13 +30,13 @@ public class pruebas {
         data.getClientes().add(c);*/
         AppController controller = new AppController();
 
-       /* Game g = new Game("game", "1", 0, Product.Status.AVAILABLE, GameCategory.Cars);
-        Movie m = new Movie("movie", "2", 0, Product.Status.AVAILABLE, MovieCategory.Horror);
+       Game g = new Game(GameCategory.Cars, 3, "1", "1", 0, Product.Status.AVAILABLE, ProductsTypes.Otros);
+        Movie m = new Movie(MovieCategory.Horror, 16, "2", "2", 0, Product.Status.AVAILABLE, ProductsTypes.Otros);
         Other o = new Other("other", "3", 0, Product.Status.AVAILABLE);
         data.getProductos().add(o);
         data.getProductos().add(g);
         data.getProductos().add(m);
-        controller.saveCatalogFromDDBB();*/
+        controller.saveCatalogFromDDBB();
        controller.loadCatalogFromDDBB();
         GUIData.ItemToScreen(data.getProductos());
         //controller.loadClientsFromDDBB();

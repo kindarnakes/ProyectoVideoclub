@@ -11,7 +11,7 @@ import io.VideoClub.Model.Enums.ProductsTypes;
  *
  * @author Santos
  */
-public class Other extends Product implements Cloneable{
+public class Other extends Product implements Cloneable {
 
     public Other(String name, String description, double prize, Status status) {
         super(name, description, prize, status, ProductsTypes.Otros);
@@ -20,8 +20,6 @@ public class Other extends Product implements Cloneable{
     public Other(String key, Status status, ProductsTypes type, String name, String description, double prize) {
         super(key, status, type, name, description, prize);
     }
-
-    
 
     @Override
     public String getName() {
@@ -63,12 +61,13 @@ public class Other extends Product implements Cloneable{
         boolean result = false;
         if (o != null) {
             if (this == o) {
+                result = true;
+            } else {
+
                 if (o instanceof Other) {
-                    Other aux = (Other) o;
                     if (super.equals(o)) {
                         result = true;
                     }
-
                 }
 
             }
@@ -81,6 +80,5 @@ public class Other extends Product implements Cloneable{
     protected Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
-
 
 }

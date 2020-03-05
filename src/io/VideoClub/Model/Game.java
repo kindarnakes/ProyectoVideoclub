@@ -12,21 +12,35 @@ import io.VideoClub.Model.Enums.ProductsTypes;
  *
  * @author Santos
  */
-public class Game extends Product implements Cloneable{
+public class Game extends Product implements Cloneable {
 
     private GameCategory category;
+    private int minAge;
 
     public Game(String name, String description, double prize, Status status, GameCategory category) {
-        super(name, description, prize, status, ProductsTypes.Peliculas);
+        super(name, description, prize, status, ProductsTypes.Juegos);
         this.category = category;
     }
 
-    public Game(GameCategory category, String key, Status status, ProductsTypes type, String name, String description, double prize) {
+    public Game(GameCategory category, int minAge, String name, String description, double prize, Status status, ProductsTypes type) {
+        super(name, description, prize, status, type);
+        this.category = category;
+        this.minAge = minAge;
+    }
+
+    public Game(GameCategory category, String key, Status status, ProductsTypes type, String name, String description, double prize, int minAge) {
         super(key, status, type, name, description, prize);
         this.category = category;
+        this.minAge = minAge;
     }
 
-    
+    public int getMinAge() {
+        return minAge;
+    }
+
+    public void setMinAge(int minAge) {
+        this.minAge = minAge;
+    }
 
     public GameCategory getCategory() {
         return category;
@@ -68,7 +82,7 @@ public class Game extends Product implements Cloneable{
 
     @Override
     public String toString() {
-        return "Juego, categoria=" + category + "| " + super.toString();
+        return "Juego, categoria=" + category + " , edad minima= " + this.minAge + "| " + super.toString();
     }
 
     @Override
@@ -76,12 +90,13 @@ public class Game extends Product implements Cloneable{
         boolean result = false;
         if (o != null) {
             if (this == o) {
+                result = true;
+            } else {
+
                 if (o instanceof Game) {
-                    Game aux = (Game) o;
                     if (super.equals(o)) {
                         result = true;
                     }
-
                 }
 
             }

@@ -4,7 +4,7 @@ package io.VideoClub.View;
 
 public class GUI{
     public static void principal(){
-        boolean result=false;
+       /* boolean result=false;
         do{
         System.out.println("Bienvenido al menú principal Blockbuster");
         System.out.println("1.- Gestión de clientes");
@@ -157,7 +157,7 @@ public class GUI{
                 principal();
                 break;
 
-        }
+        }*/
      }
     
 
