@@ -202,7 +202,25 @@ public class AppController implements IAppController {
         }
         return result;
     }
+public Client SearchClient(String id){
+   Set<IClient> A = Data.getInstance().getClientes();
+   Client aux=new Client("", "");
+    for (IClient a : A) {
+            if (a.getID().equals(id)) {
+                aux=(Client)a;
+            break;   
+                
+            }
+    } return aux;
+    
+}
 
+public Product SearchProduct(String Nombre){
+   
+   
+   return null; 
+}
+            
     @Override
     public boolean addProduct(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
