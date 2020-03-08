@@ -3,6 +3,7 @@ package io.VideoClub.Model;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
 
 public class Client implements IClient, Comparable<Client> {
@@ -14,7 +15,7 @@ private LocalDateTime time;
     public Client(String name, String phone) {
         this.name = name;
         this.phone = phone;
-        this.iD=GenerateId();
+        this.iD = GenerateId();
         this.time=LocalDateTime.now();
     }
 
@@ -28,11 +29,8 @@ private LocalDateTime time;
     private Client() {
     }
     
-    
-
-
 public String GenerateId(){
-    String idResult="";
+    String idResult=(String) UUID.randomUUID().toString().subSequence(0, 16);
     return idResult;
 }
     @Override
@@ -99,7 +97,7 @@ public String GenerateId(){
 
     @Override
     public String toString() {
-        return "iD=" +   iD + " name=" +   name + " phone=" +   phone + " time=" +   time + '}';
+        return "iD=" +   iD + " name=" +   name + " phone=" +   phone + " fecha de nacimiento=" +   time.getYear() + "/" + time.getMonthValue()+ "/" + time.getDayOfMonth();
     }
     
 }

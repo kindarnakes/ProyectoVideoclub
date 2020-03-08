@@ -1,5 +1,9 @@
 package io.VideoClub.View;
 
+import io.VideoClub.Model.Enums.GameCategory;
+import io.VideoClub.Model.Enums.MovieCategory;
+import io.VideoClub.Model.Enums.ProductsTypes;
+import io.VideoClub.Model.Product;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -7,6 +11,7 @@ import java.util.Scanner;
 public class UIUtilities {
 
     private static Scanner keyboard = new Scanner(System.in);
+    public static final String defaultDateParsed = "yyyy/MM/dd";
 
     /**
      * Lee un entero de teclado
@@ -137,27 +142,161 @@ public class UIUtilities {
         System.out.print("\n\n\n\n\n\n\n\n\n\n");
         System.out.flush();
     }
+
     /**
-     * Recoge una fecha como string y la devuelve como LocalDateTime 
+     * Recoge una fecha como string y la devuelve como LocalDateTime
+     *
      * @param s String a mostrar por pantalla
      * @param parsed formato en el que se debe insertar la fecha
      * @return Fecha correcta
      */
-    public static LocalDateTime getDate(String s, String parsed){
+    public static LocalDateTime getDate(String s, String parsed) {
         boolean result = false;
         LocalDateTime time = null;
-        
+
         while (!result) {
-                try {
-                    String fecha = UIUtilities.getString(s) + " 00:00";
-                    DateTimeFormatter format = DateTimeFormatter.ofPattern(parsed + " HH:mm");
-                    time = LocalDateTime.parse(fecha, format);
-                    result = true;
-                } catch (Exception ex) {
-                    System.out.println("Fecha no correcta");
-                }
+            try {
+                String fecha = UIUtilities.getString(s + " [" + parsed + "]") + " 00:00";
+                DateTimeFormatter format = DateTimeFormatter.ofPattern(parsed + " HH:mm");
+                time = LocalDateTime.parse(fecha, format);
+                result = true;
+            } catch (Exception ex) {
+                System.out.println("Fecha no correcta");
             }
+        }
         return time;
     }
+
+    /**
+     * Consigue un tipo de pelicula por teclado
+     *
+     * @return El tipo correcto
+     */
+    public static MovieCategory getMovieCategory() {
+        int opt;
+        MovieCategory type = null;
+        do {
+            System.out.println("1. Horror"
+                    + "\n2. Love"
+                    + "\n3. Action"
+                    + "\n4. SciFi");
+
+            opt = UIUtilities.getInt("Categoria");
+            switch (opt) {
+                case 1:
+                    type = MovieCategory.Horror;
+                    break;
+                case 2:
+                    type = MovieCategory.Love;
+                    break;
+                case 3:
+                    type = MovieCategory.Action;
+                    break;
+                case 4:
+                    type = MovieCategory.SciFi;
+                    break;
+                default:
+                    System.out.println("Opcion incorrecta");
+            }
+        } while (opt <= 0 || opt > 4);
+
+        return type;
+
+    }
+
+    /**
+     * Consigue un tipo de juego por teclado
+     *
+     * @return El tipo correcto
+     */
+    public static GameCategory getGameCategory() {
+        int opt;
+        GameCategory type = null;
+        do {
+            System.out.println("1. Adventures"
+                    + "\n2. Cars"
+                    + "\n3. Shooter");
+
+            opt = UIUtilities.getInt("Categoria");
+            switch (opt) {
+                case 1:
+                    type = GameCategory.Adeventures;
+                    break;
+                case 2:
+                    type = GameCategory.Cars;
+                    break;
+                case 3:
+                    type = GameCategory.Shooter;
+                    break;
+                default:
+                    System.out.println("Opcion incorrecta");
+            }
+        } while (opt <= 0 || opt > 3);
+
+        return type;
+
+    }
+        /**
+     * Consigue un tipo de producto por teclado
+     *
+     * @return El tipo correcto
+     */
+    public static ProductsTypes getType() {
+        int opt;
+        ProductsTypes type = null;
+        do {
+            System.out.println("1. Juegos"
+                    + "\n2. Peliculas"
+                    + "\n3. Otros");
+
+            opt = UIUtilities.getInt("Categoria");
+            switch (opt) {
+                case 1:
+                    type = ProductsTypes.Juegos;
+                    break;
+                case 2:
+                    type = ProductsTypes.Peliculas;
+                    break;
+                case 3:
+                    type = ProductsTypes.Otros;
+                    break;
+                default:
+                    System.out.println("Opcion incorrecta");
+            }
+        } while (opt <= 0 || opt > 3);
+
+        return type;
+
+    }
+    
+            /**
+     * Consigue un status por teclado
+     *
+     * @return El status correcto
+     */
+    public static Product.Status getStatus() {
+        int opt;
+        Product.Status type = null;
+        do {
+            System.out.println("1. Reservados"
+                    + "\n2. Disponibles");
+
+            opt = UIUtilities.getInt("Opcion");
+            switch (opt) {
+                case 1:
+                    type = Product.Status.RESERVED;
+                    break;
+                case 2:
+                    type = Product.Status.AVAILABLE;
+                    break;
+                default:
+                    System.out.println("Opcion incorrecta");
+            }
+        } while (opt <= 0 || opt > 2);
+
+        return type;
+
+    }
+    
 
 }

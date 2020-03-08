@@ -5,6 +5,22 @@
         <description>3</description>
         <prize>0.0</prize>
         <status>AVAILABLE</status>
+        <key>f801d223-83da-4e</key>
+    </Other>
+    <Movie>
+        <movie_category>Action</movie_category>
+        <min_age>3</min_age>
+        <name>Los increibles</name>
+        <description>Una familia de superheroes</description>
+        <prize>1.5</prize>
+        <status>AVAILABLE</status>
+        <key>e8373da2-f66a-49</key>
+    </Movie>
+    <Other>
+        <name>other</name>
+        <description>3</description>
+        <prize>0.0</prize>
+        <status>AVAILABLE</status>
         <key>9e48be5e-5e86-40</key>
     </Other>
     <Movie>

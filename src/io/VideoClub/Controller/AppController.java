@@ -17,7 +17,6 @@ import io.VideoClub.Model.Other;
 import io.VideoClub.Model.Product;
 import io.VideoClub.Model.ProductNameComparator;
 import io.VideoClub.Model.Reservation;
-import io.VideoClub.View.UIUtilities;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -238,7 +237,17 @@ public class AppController implements IAppController {
         return aux;
 
     }
-
+    public Set<Reservation> listAllReservations(String id) {
+        Set<Reservation> reservations = Data.getInstance().getReservas();
+        Set<Reservation> aux = new TreeSet<>();
+        reservations.forEach((r)->{
+        if(r.cli.getID().equals(id)){
+            aux.add(r);
+        }
+        });
+        
+        return aux;
+    }
     @Override
     public Set<Reservation> listAllReservations() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -285,21 +294,22 @@ public class AppController implements IAppController {
     @Override
     public boolean createMovie(ProductsTypes type, String name, String description, MovieCategory cat, int minAge, double prize) {
         Movie m = new Movie(cat, minAge, name, description, prize, Product.Status.AVAILABLE, type);
-        
+
         return Data.getInstance().getProductos().add(m);
     }
 
     @Override
     public boolean createGame(ProductsTypes type, String name, String description, GameCategory cat, int minAge, double prize) {
         Game g = new Game(cat, minAge, name, description, prize, Product.Status.RESERVED, type);
-        
+
         return Data.getInstance().getProductos().add(g);
     }
 
     @Override
-    public boolean createClient(String id, String name, String phone, LocalDateTime time) {
+    public boolean createClient(String name, String phone, LocalDateTime time) {
 
-        IClient aux = new Client(id, name, phone, time);
+        IClient aux = new Client(name, phone);
+        aux.setTime(time);
 
         return Data.getInstance().getClientes().add(aux);
 
@@ -322,54 +332,126 @@ public class AppController implements IAppController {
     }
 
     @Override
-    public boolean editClient(IClient e) {
+    public boolean editClient(IClient e, IClient newC) {
         boolean result = false;
         Set<IClient> A = Data.getInstance().getClientes();
         if (A.contains(e)) {
-
-            e.setName(UIUtilities.getString("Nuevo nombre"));
-            e.setPhone(UIUtilities.getString("Nuevo telefono"));
-            e.setTime(UIUtilities.getDate("Fecha de nacimiento [yyyy/mm/dd]", "yyyy/MM/dd"));
+            e.setName(newC.getName());
+            e.setPhone(newC.getPhone());
+            e.setTime(newC.getTime());
+            result = true;
         }
         return result;
     }
-public Client SearchClient(String id){
-   Set<IClient> A = Data.getInstance().getClientes();
-   Client aux=new Client("", "");
-    for (IClient a : A) {
-            if (a.getID().equals(id)) {
-                aux=(Client)a;
-            break;   
-                
-            }
-    } return aux;
-    
-}
 
-public Product SearchProduct(String Nombre){
-   
-   
-   return null; 
-}
-            
+    public Client SearchClient(String id) {
+        Set<IClient> A = Data.getInstance().getClientes();
+        Client aux = new Client("", "");
+        for (IClient a : A) {
+            if (a.getID().equals(id)) {
+                aux = (Client) a;
+                break;
+
+            }
+        }
+        return aux;
+
+    }
+
+    public Product SearchProduct(String id) {
+
+        for (Product p : Data.getInstance().getProductos()) {
+            if (p.getKey().equals(id)) {
+                return p;
+            }
+        }
+
+        return null;
+    }
+
+    public Product SearchProductByName(String name) {
+
+        for (Product p : Data.getInstance().getProductos()) {
+            if (p.getName().equals(name)) {
+                return p;
+            }
+        }
+
+        return null;
+    }
+
     @Override
     public boolean addProduct(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Product p = SearchProductByName(name);
+        boolean added;
+
+        if (p != null) {
+            try {
+                p = (Product) p.clone();
+                added = Data.getInstance().getProductos().add(p);
+            } catch (CloneNotSupportedException ex) {
+                added = false;
+            }
+        } else {
+            added = false;
+        }
+
+        return added;
     }
 
     @Override
     public boolean removeProduct(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Product p;
+        Data data = Data.getInstance();
+        boolean removed = false;
+        do {
+            p = SearchProductByName(name);
+            removed = removed || data.getProductos().remove(p);
+        } while (p != null);
+
+        return removed;
+    }
+
+    public boolean removeUniqueProduct(String id) {
+        Product p;
+        Data data = Data.getInstance();
+        boolean removed;
+
+        p = SearchProduct(id);
+        removed = data.getProductos().remove(p);
+
+        return removed;
     }
 
     @Override
     public boolean editProduct(String key, Product newP) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean edited;
+        Product p = SearchProduct(key);
+
+        if (p != null && p.getClass() == newP.getClass()) {
+            edited = removeUniqueProduct(key);
+
+            if (edited == true) {
+                newP.setKey(key);
+                edited = Data.getInstance().getProductos().add(newP);
+            }
+        } else {
+            edited = false;
+        }
+        return edited;
     }
 
     @Override
-    public Product isAvailableProduct(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Product isAvailableProduct(String name, ProductsTypes type) {
+        Product p = null;
+
+        for (Product aux : Data.getInstance().getProductos()) {
+            if (aux.getName().equals(name) && aux.getType() == type && aux.getStatus() == Product.Status.AVAILABLE) {
+                p = aux;
+                break;
+            }
+        }
+        return p;
     }
 
     @Override
@@ -571,7 +653,7 @@ public Product SearchProduct(String Nombre){
 
     @Override
     public boolean loadAllDDBB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return loadCatalogFromDDBB() && loadClientsFromDDBB() /*&& loadReservationsFromDDBB()*/;
     }
 
     @Override
@@ -726,7 +808,7 @@ public Product SearchProduct(String Nombre){
 
     @Override
     public boolean saveAllDDBB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return saveCatalogFromDDBB() && saveClientsFromDDBB() /*&& saveReservationsFromDDBB()*/;
     }
 
 }

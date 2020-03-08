@@ -3,6 +3,7 @@ package io.VideoClub.View;
 import io.VideoClub.Model.IClient;
 import io.VideoClub.Model.Product;
 import io.VideoClub.Model.Reservation;
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -11,7 +12,7 @@ import java.util.Set;
  */
 public class GUIData {
 
-    public static void ItemToScreen(Set<Product> s) {
+    public static void ItemToScreen(Collection<Product> s) {
         s.forEach((item) -> {
             GUIItem.Show(item);
         });

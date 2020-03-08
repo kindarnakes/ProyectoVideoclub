@@ -50,16 +50,16 @@ public interface IAppController {
     boolean createMovie(ProductsTypes type,String name, String description, MovieCategory cat,int minAge, double prize);
     boolean createGame(ProductsTypes type, String name, String description, GameCategory cat,int minAge, double prize);
     
-    boolean createClient(String id, String name,String phone,LocalDateTime time);
+    boolean createClient(String name,String phone,LocalDateTime time);
     boolean removeClient(String id);  //if has reservations cant be deleted
-    boolean editClient(IClient e);
+    boolean editClient(IClient e, IClient newC);
     
     boolean addProduct(String name);
     boolean removeProduct(String name);
     
     boolean editProduct(String key, Product newP);
     
-    Product isAvailableProduct(String name);  //get product if yes
+    Product isAvailableProduct(String name, ProductsTypes type);  //get product if yes
     boolean reserveProduct(Product prod,IClient client);
     double closeReservation();  //-->> status finished  --> get prizetopay
     

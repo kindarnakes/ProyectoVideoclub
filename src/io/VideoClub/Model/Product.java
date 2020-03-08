@@ -68,7 +68,7 @@ public abstract class Product extends Item implements Cloneable, Comparable<Obje
     }
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
+    public Object clone() throws CloneNotSupportedException {
         Product clone = (Product) super.clone(); //To change body of generated methods, choose Tools | Templates.
         clone.key = generateRandom16Chars();
         return (Object) clone;
@@ -110,6 +110,8 @@ public abstract class Product extends Item implements Cloneable, Comparable<Obje
     public void setType(ProductsTypes type) {
         this.type = type;
     }
+    
+    
 
     @Override
     public int compareTo(Object o) {
