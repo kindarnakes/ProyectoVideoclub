@@ -15,8 +15,9 @@ public abstract class Item {
 
     @Override
     public String toString() {
-       return "Item, nombre="+name+", descripcion="+description+", precio="+prize;
+       return "nombre="+name+", descripcion="+description+", precio="+prize;
        
     }
+    
     
 }

@@ -90,6 +90,7 @@ public class GUI {
             }
         } while (opciones1 != 7);
     }
+                        
 
     public static void productos() {
         int opciones2;
@@ -153,7 +154,6 @@ public class GUI {
                     break;
 
                 case 4:
-
                     historialReservas();
                     break;
                 case 5:
