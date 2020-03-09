@@ -59,7 +59,7 @@ public abstract class Product extends Item implements Cloneable, Comparable<Obje
         if (o != null) {
             if (o instanceof Product) {
                 Product other = (Product) o;
-                if (other.key.equals(other.key)) {
+                if (other.key.equals(this.key)) {
                     result = true;
                 }
             }
