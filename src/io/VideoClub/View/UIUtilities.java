@@ -220,7 +220,7 @@ public class UIUtilities {
             opt = UIUtilities.getInt("Categoria");
             switch (opt) {
                 case 1:
-                    type = GameCategory.Adeventures;
+                    type = GameCategory.Adventures;
                     break;
                 case 2:
                     type = GameCategory.Cars;

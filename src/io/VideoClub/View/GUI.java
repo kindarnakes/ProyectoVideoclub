@@ -27,7 +27,7 @@ public class GUI {
             System.out.println("Bienvenido al menú principal Blockbuster");
             System.out.println("1.- Gestión de clientes");
             System.out.println("2.- Gestion de Productos");
-            System.out.println("3.- Gestion deReservas");
+            System.out.println("3.- Gestion de Reservas");
             System.out.println("4.- Salir ");
 
             opciones = UIUtilities.getInt();

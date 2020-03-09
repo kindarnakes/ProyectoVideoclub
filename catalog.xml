@@ -41,4 +41,31 @@
         <status>AVAILABLE</status>
         <key>5dbb93fe-f7ed-4c</key>
     </Game>
+    <Game>
+        <game_category>Cars</game_category>
+        <min_age>3</min_age>
+        <name>1</name>
+        <description>1</description>
+        <prize>0.0</prize>
+        <status>AVAILABLE</status>
+        <key>339e8ea7-8fa9-4f</key>
+    </Game>
+    <Game>
+        <game_category>Adventures</game_category>
+        <min_age>18</min_age>
+        <name>The Witcher 3</name>
+        <description>Juego de cazar engendros</description>
+        <prize>1.5</prize>
+        <status>AVAILABLE</status>
+        <key>31630658-5ec4-4a</key>
+    </Game>
+    <Game>
+        <game_category>Adventures</game_category>
+        <min_age>18</min_age>
+        <name>The Witcher 3</name>
+        <description>Juego de cazar engendros</description>
+        <prize>1.5</prize>
+        <status>AVAILABLE</status>
+        <key>2af8b1e3-68aa-47</key>
+    </Game>
 </Products>

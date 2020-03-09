@@ -300,7 +300,7 @@ public class AppController implements IAppController {
 
     @Override
     public boolean createGame(ProductsTypes type, String name, String description, GameCategory cat, int minAge, double prize) {
-        Game g = new Game(cat, minAge, name, description, prize, Product.Status.RESERVED, type);
+        Game g = new Game(cat, minAge, name, description, prize, Product.Status.AVAILABLE, type);
 
         return Data.getInstance().getProductos().add(g);
     }
@@ -545,7 +545,7 @@ public class AppController implements IAppController {
 
                     switch (game_category) {
                         case "Adventures":
-                            category = GameCategory.Adeventures;
+                            category = GameCategory.Adventures;
                             break;
                         case "Cars":
                             category = GameCategory.Cars;
@@ -597,7 +597,7 @@ public class AppController implements IAppController {
                             statusother = null;
                     }
 
-                    data.getProductos().add(new Other(key, statusother, ProductsTypes.Juegos, name, description, Double.valueOf(prize)));
+                    data.getProductos().add(new Other(key, statusother, ProductsTypes.Otros, name, description, Double.valueOf(prize)));
 
                 }
 
