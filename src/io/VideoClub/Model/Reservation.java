@@ -24,12 +24,29 @@ public class Reservation {
     public Reservation(Product pro, IClient cli) {
         this.pro = pro;
         this.cli = cli;
+        this.finished = null;
+        this.pro.setStatus(Product.Status.RESERVED);
         ini = LocalDate.now();
         end = LocalDate.now().plusDays(2);
         if (end.getDayOfWeek() == DayOfWeek.SUNDAY) {
             end = end.plusDays(1);
         }
         status = StatusReserve.ACTIVE;
+    }
+
+    public Reservation(Product pro, IClient cli, LocalDate ini, LocalDate end, LocalDate finished, StatusReserve status) {
+
+        if (finished == null && end.isBefore(LocalDate.now())) {
+            this.status = StatusReserve.PENDING;
+        } else {
+            this.status = status;
+        }
+        this.pro = pro;
+        this.cli = cli;
+        this.ini = ini;
+        this.end = end;
+        this.finished = finished;
+
     }
 
     public boolean equals(Object o) {
@@ -48,4 +65,39 @@ public class Reservation {
         }
         return result;
     }
+
+    public void addDays(int days) {
+        this.end = LocalDate.now().plusDays(days);
+        this.status = StatusReserve.ACTIVE;
+    }
+
+    public void finish() {
+        this.finished = LocalDate.now();
+        this.pro.setStatus(Product.Status.AVAILABLE);
+        this.status = StatusReserve.FINISHED;
+    }
+
+    public double getIncome() {
+        double income = 0;
+
+        switch (this.status) {
+            case ACTIVE:
+                income = (this.pro.getPrize()/2) * this.ini.until(end).getDays();
+                break;
+            case PENDING:
+                income = (this.pro.getPrize()/2) * this.ini.until(LocalDate.now()).getDays();
+                break;
+            case FINISHED:
+                income = (this.pro.getPrize()/2) * this.ini.until(finished).getDays();
+        }
+
+        return income;
+    }
+
+    @Override
+    public String toString() {
+        return "Producto reservado: " + pro.name + "id Producto" + pro.getKey() + ", Cliente" + cli.getName() + "\n\t--->"
+                + "Fecha inicio" + ini + ", Fecha fin: " + end + ", Entregado: " + ((finished != null) ? finished : "pendiente") + ", Estado" + status;
+    }
+
 }
