@@ -460,7 +460,7 @@ public class AppController implements IAppController {
     }
 
     @Override
-    public double closeReservation() {
+    public double closeReservation(Reservation r) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
