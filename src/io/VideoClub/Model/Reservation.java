@@ -3,7 +3,8 @@ package io.VideoClub.Model;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 
-public class Reservation {
+public class Reservation implements Comparable<Reservation>{
+
 
     public enum StatusReserve {
         ACTIVE, //ini on, finished off
@@ -92,6 +93,15 @@ public class Reservation {
         }
 
         return income;
+    }
+    
+    @Override
+    public int compareTo(Reservation o) {
+        if(this.equals(o)){
+            return 0;
+        }else{
+            return this.cli.getID().compareTo(o.cli.getID()) + this.pro.compareTo(o.pro) + this.ini.compareTo(o.ini);
+        }
     }
 
     @Override

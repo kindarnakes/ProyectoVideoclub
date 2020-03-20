@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Reservations>
+    <Reservation>
+        <clientid>3</clientid>
+        <productkey>72f1472b-e227-48</productkey>
+        <dateini>2020-03-20</dateini>
+        <dateend>2020-03-23</dateend>
+        <datefinish/>
+        <status>ACTIVE</status>
+    </Reservation>
+    <Reservation>
+        <clientid>3</clientid>
+        <productkey>5ccd3f7f-1a54-4c</productkey>
+        <dateini>2020-03-20</dateini>
+        <dateend>2020-03-23</dateend>
+        <datefinish/>
+        <status>ACTIVE</status>
+    </Reservation>
+    <Reservation>
+        <clientid>3</clientid>
+        <productkey>5476be2f-49e6-45</productkey>
+        <dateini>2020-03-20</dateini>
+        <dateend>2020-03-23</dateend>
+        <datefinish>2020-03-20</datefinish>
+        <status>FINISHED</status>
+    </Reservation>
+</Reservations>

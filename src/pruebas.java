@@ -9,6 +9,7 @@ import io.VideoClub.Model.Game;
 import io.VideoClub.Model.Movie;
 import io.VideoClub.Model.Other;
 import io.VideoClub.Model.Product;
+import io.VideoClub.Model.Reservation;
 import io.VideoClub.View.GUIData;
 import java.time.LocalDateTime;
 
@@ -23,7 +24,7 @@ public class pruebas {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        //Client c = new Client("3", "1", "01", LocalDateTime.now());
+        Client c = new Client("3", "1", "01", LocalDateTime.now());
         Data data = Data.getInstance();
         /*data.getClientes().add(c);
         /*c = new Client("2", "4", "02", LocalDateTime.now());
@@ -39,6 +40,20 @@ public class pruebas {
         controller.saveCatalogFromDDBB();
        controller.loadCatalogFromDDBB();
         GUIData.ItemToScreen(data.getProductos());
+        
+        Reservation r = new Reservation(o, c);
+        data.getReservas().add(r);
+        r = new Reservation(g, c);
+        data.getReservas().add(r);
+        r = new Reservation(m, c);
+        r.finish();
+        data.getReservas().add(r);
+        GUIData.ReservationToScreen(Data.getInstance().getReservas());
+        controller.saveReservationsFromDDBB();
+        controller.loadAllDDBB();
+        System.out.println("\n\n\n");
+        GUIData.ReservationToScreen(data.getReservas());
+        
         //controller.loadClientsFromDDBB();
         /*GUIData.clientToScreen(data.getClientes());
         controller.editClient(c);

@@ -24,6 +24,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -237,17 +239,19 @@ public class AppController implements IAppController {
         return aux;
 
     }
+
     public Set<Reservation> listAllReservations(String id) {
         Set<Reservation> reservations = Data.getInstance().getReservas();
         Set<Reservation> aux = new TreeSet<>();
-        reservations.forEach((r)->{
-        if(r.cli.getID().equals(id)){
-            aux.add(r);
-        }
+        reservations.forEach((r) -> {
+            if (r.cli.getID().equals(id)) {
+                aux.add(r);
+            }
         });
-        
+
         return aux;
     }
+
     @Override
     public Set<Reservation> listAllReservations() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -280,7 +284,20 @@ public class AppController implements IAppController {
 
     @Override
     public Map<IClient, Double> resumeAllIncomingsByClient() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Map<IClient, Double> map = new HashMap<>();
+        Iterator<IClient> itC = Data.getInstance().getClientes().iterator();
+
+        while (itC.hasNext()) {
+            IClient c = itC.next();
+            Double incoming = new Double(0);
+            for (Reservation r : Data.getInstance().getReservas()) {
+                if (r.cli.equals(c) && r.status == Reservation.StatusReserve.FINISHED) {
+                    incoming += r.getIncome();
+                }
+            }
+            map.put(c, incoming);
+        }
+        return map;
     }
 
     @Override
@@ -648,12 +665,66 @@ public class AppController implements IAppController {
 
     @Override
     public boolean loadReservationsFromDDBB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean loaded = false;
+
+        Data data = Data.getInstance();
+        data.getReservas().clear();
+
+        try {
+            File file = new File(reservationsDDBB);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder;
+            dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(file);
+
+            doc.getDocumentElement().normalize();
+            NodeList nList = doc.getElementsByTagName("Reservation");
+            for (int i = 0; i < nList.getLength(); i++) {
+                Node nNode = nList.item(i);
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                    Element eElement = (Element) nNode;
+                    String clientid = eElement.getElementsByTagName("clientid").item(0).getTextContent();
+                    IClient c = this.SearchClient(clientid);
+                    String productkey = eElement.getElementsByTagName("productkey").item(0).getTextContent();
+                    Product p = this.SearchProduct(productkey);
+                    LocalDate dateini = LocalDate.parse(eElement.getElementsByTagName("dateini").item(0).getTextContent());
+                    LocalDate dateend = LocalDate.parse(eElement.getElementsByTagName("dateend").item(0).getTextContent());
+                    String datefinish = eElement.getElementsByTagName("datefinish").item(0).getTextContent();
+                    LocalDate finish = datefinish.equals("") ? null : LocalDate.parse(datefinish);
+                    Reservation.StatusReserve status;
+                    String Sstatus = eElement.getElementsByTagName("status").item(0).getTextContent();
+
+                    switch (Sstatus) {
+                        case "ACTIVE":
+                            status = Reservation.StatusReserve.ACTIVE;
+                            break;
+                        case "FINISHED":
+                            status = Reservation.StatusReserve.FINISHED;
+                            break;
+                        case "PENDING":
+                            status = Reservation.StatusReserve.PENDING;
+                            break;
+                        default:
+                            status = null;
+                            break;
+                    }
+
+                    Reservation r = new Reservation(p, c, dateini, dateend, finish, status);
+                    data.getReservas().add(r);
+
+                }
+            }
+            loaded = true;
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
+            System.out.println(ex);
+        }
+        return loaded;
     }
 
     @Override
     public boolean loadAllDDBB() {
-        return loadCatalogFromDDBB() && loadClientsFromDDBB() /*&& loadReservationsFromDDBB()*/;
+        return loadCatalogFromDDBB() && loadClientsFromDDBB() && loadReservationsFromDDBB();
     }
 
     @Override
@@ -803,12 +874,76 @@ public class AppController implements IAppController {
 
     @Override
     public boolean saveReservationsFromDDBB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean saved = false;
+
+        try {
+            Data data = Data.getInstance();
+            DocumentBuilderFactory dFact = DocumentBuilderFactory.newInstance();
+            DocumentBuilder build;
+
+            build = dFact.newDocumentBuilder();
+
+            org.w3c.dom.Document doc = build.newDocument();
+
+            Element root = doc.createElement("Reservations");
+
+            data.getReservas().stream().map((r) -> {
+                Element con = doc.createElement("Reservation");
+
+                Element clientid = doc.createElement("clientid");
+                clientid.appendChild(doc.createTextNode(r.cli.getID()));
+                con.appendChild(clientid);
+
+                Element productkey = doc.createElement("productkey");
+                productkey.appendChild(doc.createTextNode(r.pro.getKey()));
+                con.appendChild(productkey);
+
+                Element dateini = doc.createElement("dateini");
+                dateini.appendChild(doc.createTextNode(r.ini.toString()));
+                con.appendChild(dateini);
+
+                Element dateend = doc.createElement("dateend");
+                dateend.appendChild(doc.createTextNode(r.end.toString()));
+                con.appendChild(dateend);
+
+                Element datefinish = doc.createElement("datefinish");
+                datefinish.appendChild(doc.createTextNode((r.finished != null) ? r.finished.toString() : ""));
+                con.appendChild(datefinish);
+
+                Element status = doc.createElement("status");
+                status.appendChild(doc.createTextNode(String.valueOf(r.status)));
+                con.appendChild(status);
+
+                return con;
+            }).forEachOrdered((con) -> {
+                root.appendChild(con);
+            });
+            doc.appendChild(root);
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+
+            transformer.setOutputProperty(
+                    "{http://xml.apache.org/xslt}indent-amount", "4");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(new File(reservationsDDBB));
+
+            transformer.transform(source, result);
+            saved = true;
+        } catch (TransformerException | ParserConfigurationException ex) {
+            System.out.println(ex);
+        }
+
+        return saved;
     }
 
     @Override
     public boolean saveAllDDBB() {
-        return saveCatalogFromDDBB() && saveClientsFromDDBB() /*&& saveReservationsFromDDBB()*/;
+        return saveCatalogFromDDBB() && saveClientsFromDDBB() && saveReservationsFromDDBB();
     }
 
 }
