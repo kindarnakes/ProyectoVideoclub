@@ -181,7 +181,9 @@ public class AppController implements IAppController {
 
             }
         }
-        aux.put(p1, n);
+        if (p1 != null) {
+            aux.put(p1, n);
+        }
         return aux;
 
     }
@@ -202,7 +204,9 @@ public class AppController implements IAppController {
 
             }
         }
-        aux.put(p1, n);
+        if (p1 != null) {
+            aux.put(p1, n);
+        }
         return aux;
 
     }
@@ -524,25 +528,90 @@ public class AppController implements IAppController {
     @Override
     public boolean reserveProduct(Product prod, IClient client) {
         boolean result = false;
+        boolean age;
         Product p = SearchProduct(prod.getKey());
         Client c = SearchClient(client.getID());
+
         if (p != null && c != null) {
-            if (p.getStatus() == Product.Status.AVAILABLE) {
+            age = isAged(p, c);
+            if (p.getStatus() == Product.Status.AVAILABLE && age) {
                 p.setStatus(Product.Status.RESERVED);
                 Reservation R = new Reservation(prod, client);
-                Data.getInstance().getReservas().add(R);
-                result = true;
+                result = Data.getInstance().getReservas().add(R);
             }
         }
 
         return result;
     }
 
+    public boolean isAged(Product p, Client c) {
+        boolean age = false;
+        if (p != null && c != null) {
+            if (p instanceof Movie) {
+                Movie m = (Movie) p;
+                age = (LocalDate.now().getDayOfYear() >= c.getTime().getDayOfYear())
+                        ? (LocalDate.now().getYear() - c.getTime().getYear()) >= m.getMinAge()
+                        : (LocalDate.now().getYear() - c.getTime().getYear()) - 1 >= m.getMinAge();
+            }
+            if (p instanceof Game) {
+                Game g = (Game) p;
+                age = (LocalDate.now().getDayOfYear() >= c.getTime().getDayOfYear())
+                        ? (LocalDate.now().getYear() - c.getTime().getYear()) >= g.getMinAge()
+                        : (LocalDate.now().getYear() - c.getTime().getYear()) - 1 >= g.getMinAge();
+            }
+            if (p instanceof Other) {
+                age = true;
+            }
+        }
+        return age;
+    }
+
+    public boolean addDaysToReservation(Reservation r, int days) {
+        boolean added = false;
+        if (r != null) {
+            r.addDays(days);
+            added = true;
+        }
+        return added;
+    }
+
+    public Reservation searchReservationNotFinished(String productId, String clientId) {
+        boolean find = false;
+        Iterator<Reservation> it = Data.getInstance().getReservas().iterator();
+        Reservation r = null;
+        while (it.hasNext() && !find) {
+            r = it.next();
+            if (r.finished == null && r.cli.getID().equals(clientId) && r.pro.getKey().equals(productId)) {
+                find = true;
+            }
+        }
+        return find ? r : null;
+    }
+
+    public boolean removeReservation(Reservation r) {
+        return Data.getInstance().getReservas().remove(r);
+    }
+
+    public Reservation searchReservation(LocalDate ini, String productId, String clientId) {
+        boolean find = false;
+        Iterator<Reservation> it = Data.getInstance().getReservas().iterator();
+        Reservation r = null;
+        while (it.hasNext() && !find) {
+            r = it.next();
+            if (r.ini.equals(ini) && r.cli.getID().equals(clientId) && r.pro.getKey().equals(productId)) {
+                find = true;
+            }
+        }
+        return find ? r : null;
+    }
+
     @Override
     public double closeReservation(Reservation r) {
         double result = 0;
-        r.finish();
-        result = r.getIncome();
+        if (r != null) {
+            r.finish();
+            result = r.getIncome();
+        }
 
         return result;
     }

@@ -3,7 +3,7 @@
     <Other>
         <name>other</name>
         <description>3</description>
-        <prize>0.0</prize>
+        <prize>1.0</prize>
         <status>AVAILABLE</status>
         <key>72f1472b-e227-48</key>
     </Other>
@@ -12,16 +12,34 @@
         <min_age>3</min_age>
         <name>1</name>
         <description>1</description>
-        <prize>0.0</prize>
+        <prize>1.0</prize>
         <status>AVAILABLE</status>
         <key>5ccd3f7f-1a54-4c</key>
     </Game>
+    <Game>
+        <game_category>Cars</game_category>
+        <min_age>3</min_age>
+        <name>2</name>
+        <description>1</description>
+        <prize>1.0</prize>
+        <status>AVAILABLE</status>
+        <key>5ccd3f7f-1a54-48</key>
+    </Game>
     <Movie>
         <movie_category>Horror</movie_category>
-        <min_age>16</min_age>
+        <min_age>18</min_age>
         <name>2</name>
         <description>2</description>
-        <prize>0.0</prize>
+        <prize>1.0</prize>
+        <status>AVAILABLE</status>
+        <key>5476be2f-49e6-46</key>
+    </Movie>
+    <Movie>
+        <movie_category>Horror</movie_category>
+        <min_age>18</min_age>
+        <name>2</name>
+        <description>2</description>
+        <prize>1.0</prize>
         <status>AVAILABLE</status>
         <key>5476be2f-49e6-45</key>
     </Movie>

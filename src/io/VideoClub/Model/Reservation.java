@@ -3,8 +3,7 @@ package io.VideoClub.Model;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 
-public class Reservation implements Comparable<Reservation>{
-
+public class Reservation implements Comparable<Reservation> {
 
     public enum StatusReserve {
         ACTIVE, //ini on, finished off
@@ -83,30 +82,30 @@ public class Reservation implements Comparable<Reservation>{
 
         switch (this.status) {
             case ACTIVE:
-                income = (this.pro.getPrize()/2) * this.ini.until(end).getDays();
+                income = (this.pro.getPrize() / 2) * (float) this.ini.until(end).getDays();
                 break;
             case PENDING:
-                income = (this.pro.getPrize()/2) * this.ini.until(LocalDate.now()).getDays();
+                income = (this.pro.getPrize() / 2) * (float) this.ini.until(LocalDate.now()).getDays();
                 break;
             case FINISHED:
-                income = (this.pro.getPrize()/2) * this.ini.until(finished).getDays();
+                income = this.ini.until(finished).getDays() == 0 ? this.pro.getPrize() : ((this.pro.getPrize() / 2) * (float) this.ini.until(finished).getDays());
         }
 
         return income;
     }
-    
+
     @Override
     public int compareTo(Reservation o) {
-        if(this.equals(o)){
+        if (this.equals(o)) {
             return 0;
-        }else{
+        } else {
             return this.cli.getID().compareTo(o.cli.getID()) + this.pro.compareTo(o.pro) + this.ini.compareTo(o.ini);
         }
     }
 
     @Override
     public String toString() {
-        return "Producto reservado: " + pro.name + "id Producto" + pro.getKey() + ", Cliente" + cli.getName() + "\n\t--->"
+        return "Producto reservado: " + pro.name + " id Producto: " + pro.getKey() + ", Cliente: " + cli.getID() +  "Nombre:" + cli.getName() +"\n\t--->"
                 + "Fecha inicio" + ini + ", Fecha fin: " + end + ", Entregado: " + ((finished != null) ? finished : "pendiente") + ", Estado" + status;
     }
 

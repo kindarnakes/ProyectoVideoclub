@@ -1,27 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Reservations>
     <Reservation>
-        <clientid>3</clientid>
-        <productkey>72f1472b-e227-48</productkey>
-        <dateini>2020-03-20</dateini>
-        <dateend>2020-03-23</dateend>
-        <datefinish/>
-        <status>ACTIVE</status>
-    </Reservation>
-    <Reservation>
-        <clientid>3</clientid>
+        <clientid>9cd7035f-b6cb-40</clientid>
         <productkey>5ccd3f7f-1a54-4c</productkey>
-        <dateini>2020-03-20</dateini>
-        <dateend>2020-03-23</dateend>
-        <datefinish/>
-        <status>ACTIVE</status>
+        <dateini>2020-03-22</dateini>
+        <dateend>2020-03-24</dateend>
+        <datefinish>2020-03-22</datefinish>
+        <status>FINISHED</status>
     </Reservation>
     <Reservation>
-        <clientid>3</clientid>
+        <clientid>2d644794-74c1-4f</clientid>
         <productkey>5476be2f-49e6-45</productkey>
-        <dateini>2020-03-20</dateini>
-        <dateend>2020-03-23</dateend>
-        <datefinish>2020-03-20</datefinish>
+        <dateini>2020-03-14</dateini>
+        <dateend>2020-03-24</dateend>
+        <datefinish>2020-03-16</datefinish>
         <status>FINISHED</status>
+    </Reservation>
+    <Reservation>
+        <clientid>2d644794-74c1-4f</clientid>
+        <productkey>5476be2f-49e6-45</productkey>
+        <dateini>2020-03-16</dateini>
+        <dateend>2020-03-24</dateend>
+        <datefinish>2020-03-18</datefinish>
+        <status>FINISHED</status>
+    </Reservation>
+    <Reservation>
+        <clientid>2d644794-74c1-4f</clientid>
+        <productkey>5476be2f-49e6-45</productkey>
+        <dateini>2020-03-19</dateini>
+        <dateend>2020-03-24</dateend>
+        <datefinish>2020-03-21</datefinish>
+        <status>FINISHED</status>
+    </Reservation>
+    <Reservation>
+        <clientid>2d644794-74c1-4f</clientid>
+        <productkey>5476be2f-49e6-45</productkey>
+        <dateini>2020-03-21</dateini>
+        <dateend>2020-03-24</dateend>
+        <datefinish/>
+        <status>ACTIVE</status>
     </Reservation>
 </Reservations>

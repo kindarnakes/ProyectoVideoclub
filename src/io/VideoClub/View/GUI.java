@@ -3,10 +3,15 @@ package io.VideoClub.View;
 import io.VideoClub.Controller.AppController;
 import io.VideoClub.Model.Client;
 import io.VideoClub.Model.Enums.ProductsTypes;
+import io.VideoClub.Model.IClient;
 import io.VideoClub.Model.NameComparator;
+import io.VideoClub.Model.Product;
 import io.VideoClub.Model.ProductNameComparator;
+import io.VideoClub.Model.Reservation;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
+import java.util.Map;
 
 public class GUI {
 
@@ -24,6 +29,7 @@ public class GUI {
         }
         int opciones;
         do {
+            UIUtilities.clearScreen();
             System.out.println("Bienvenido al menú principal Blockbuster");
             System.out.println("1.- Gestión de clientes");
             System.out.println("2.- Gestion de Productos");
@@ -33,12 +39,15 @@ public class GUI {
             opciones = UIUtilities.getInt();
             switch (opciones) {
                 case 1:
+                    UIUtilities.clearScreen();
                     clientes();
                     break;
                 case 2:
+                    UIUtilities.clearScreen();
                     productos();
                     break;
                 case 3:
+                    UIUtilities.clearScreen();
                     reservas();
                     break;
                 case 4:
@@ -103,27 +112,34 @@ public class GUI {
             switch (opciones1) {
 
                 case 1:
+                    UIUtilities.clearScreen();
                     registrarCliente();
                     break;
 
                 case 2:
+                    UIUtilities.clearScreen();
                     editCliente();
                     break;
 
                 case 3:
+                    UIUtilities.clearScreen();
                     eliminarcliente();
                     break;
 
                 case 4:
+                    UIUtilities.clearScreen();
                     listarcliente();
                     break;
                 case 5:
+                    UIUtilities.clearScreen();
                     historialclient();
                     break;
                 case 6:
+                    UIUtilities.clearScreen();
                     buscarclient();
                     break;
                 case 7:
+                    UIUtilities.clearScreen();
                     break;
                 default:
                     System.out.println("opcion erronea, vuelva a intentarlo");
@@ -144,17 +160,21 @@ public class GUI {
             switch (opciones2) {
 
                 case 1:
+                    UIUtilities.clearScreen();
                     dardealtaproduct();
                     break;
 
                 case 2:
+                    UIUtilities.clearScreen();
                     catalogo();
                     break;
 
                 case 3:
+                    UIUtilities.clearScreen();
                     eliminarproducto();
                     break;
                 case 4:
+                    UIUtilities.clearScreen();
                     break;
                 default:
                     System.out.println("opcion erronea, vuelva a intentarlo");
@@ -170,32 +190,41 @@ public class GUI {
             System.out.println("2.- Editar reserva");
             System.out.println("3.- Listar Reserva");
             System.out.println("4.- Historial de reservas de un cliente");
-            System.out.println("5.- Volver al menú principal");
+            System.out.println("5.- Pagos");
+            System.out.println("6.- Volver al menú principal");
 
             opciones3 = UIUtilities.getInt();
 
             switch (opciones3) {
 
                 case 1:
+                    UIUtilities.clearScreen();
                     nuevareserva();
                     break;
 
                 case 2:
+                    UIUtilities.clearScreen();
                     editarreserva();
                     break;
 
                 case 3:
+                    UIUtilities.clearScreen();
                     listarreserva();
                     break;
 
                 case 4:
+                    UIUtilities.clearScreen();
                     historialReservas();
+                    break;
+                case 5:
+                    UIUtilities.clearScreen();
+                    pagos();
                     break;
                 default:
                     System.out.println("opcion erronea, vuelva a intentarlo");
 
             }
-        } while (opciones3 != 5);
+        } while (opciones3 != 6);
     }
 
     public static void registrarCliente() {
@@ -246,15 +275,18 @@ public class GUI {
         switch (opciones3) {
 
             case 1:
+                UIUtilities.clearScreen();
                 GUIData.clientToScreen(controller.listAllClients());
                 break;
 
             case 2:
+                UIUtilities.clearScreen();
                 Comparator c = new NameComparator();
                 GUIData.clientToScreen(controller.listAllClients(c));
                 break;
 
             case 3:
+                UIUtilities.clearScreen();
                 GUIData.clientToScreen(controller.listAllClientsWithReservationsNotFinished());
                 break;
             case 4:
@@ -350,7 +382,7 @@ public class GUI {
 
     public static void catalogo() {
         int opt;
-        do{
+        do {
             System.out.println("1. Listar todo"
                     + "\n2. Listar familia juegos"
                     + "\n3. Listar familia peliculas"
@@ -359,9 +391,12 @@ public class GUI {
                     + "\n6. Listar por nombre y tipo"
                     + "\n7. Listar por tipo"
                     + "\n8. Listar ordenados por nombre"
-                    + "\n9. Listar Por estado");
+                    + "\n9. Listar Por estado"
+                    + "\n10. Numero de productos con un nombre"
+                    + "\n11. Numero de productos con un nombre y un tipo"
+                    + "\n12. Salir");
             opt = UIUtilities.getInt("Opcion");
-            switch(opt){
+            switch (opt) {
                 case 1:
                     GUIData.ItemToScreen(controller.listAllProducts());
                     break;
@@ -390,11 +425,34 @@ public class GUI {
                 case 9:
                     GUIData.ItemToScreen(controller.listAllByStatus(UIUtilities.getStatus()));
                     break;
+                case 10:
+                    Map<Product, Integer> map1 = controller.listAllAmountOfProducts(UIUtilities.getString("Nombre del producto:"));
+                    if (map1 != null) {
+                        map1.forEach((p, i) -> {
+                            System.out.println("Del producto" + p.getName() + " existen " + i + " copias");
+                        });
+                    } else {
+                        System.out.println("No hay");
+                    }
+                    break;
+                case 11:
+                    Map<Product, Integer> map2 = controller.listAllAmountOfProducts(UIUtilities.getType(), UIUtilities.getString("Nombre del producto:"));
+                    if (map2 != null) {
+                        map2.forEach((p, i) -> {
+                            System.out.println("Del producto" + p.getName() + " existen " + i + " copias");
+                        });
+                    } else {
+                        System.out.println("No hay");
+                    }
+                    break;
+                case 12:
+                    break;
                 default:
                     System.out.println("Opcion incorrecta");
             }
-            
-        }while(opt <=0 || opt >9);
+            UIUtilities.clearScreen();
+
+        } while (opt != 12);
 
     }
 
@@ -426,26 +484,156 @@ public class GUI {
     }
 
     public static void nuevareserva() {
+        boolean reserved = false;
+        do {
+            Client c = controller.SearchClient(UIUtilities.getString("Id del cliente: "));
+            io.VideoClub.Model.Product p = controller.SearchProduct(UIUtilities.getString("Id de producto: "));
+            if (p != null && c != null) {
+                reserved = controller.reserveProduct(p, c);
+                if (!controller.isAged(p, c)) {
+                    System.out.println("No tiene edad para alquilar el producto");
+                }
+                if (reserved) {
+                    GUIReservation.Show(controller.searchReservation(LocalDate.now(), p.getKey(), c.getID()));
+                    System.out.println("Reserva completada");
+                } else {
+                    System.out.println("Fallo en la reserva");
+                    char ok = UIUtilities.getChar("¿Desea volver a intentar? [y/n]");
+                    switch (ok) {
+                        case 'y':
+                            reserved = false;
+                            break;
+                        case 'n':
+                            reserved = true;
+                            break;
+                        default:
+                            reserved = false;
+                    }
+                }
+            }
+        } while (!reserved);
 
     }
 
     public static void editarreserva() {
+        int opt;
+        do {
+            System.out.println("1. Añadir dias"
+                    + "\n2. Eliminar reserva"
+                    + "\n3. Finalizar reserva"
+                    + "\n4. Atras");
+            opt = UIUtilities.getInt("Opcion");
+            switch (opt) {
+                case 1:
+                    if (controller.addDaysToReservation(controller.searchReservationNotFinished(UIUtilities.getString("Id producto: "),
+                            UIUtilities.getString("Id cliente: ")), UIUtilities.getInt("Dias a añadir: "))) {
+                        System.out.println("Dias agregados\n");
+                    } else {
+                        System.out.println("Reserva no encontrada\n");
+                    }
+                    break;
+                case 2:
+                    if (controller.removeReservation(controller.searchReservation(UIUtilities.getDate("Fecha de inicio de la reserva", UIUtilities.defaultDateParsed).toLocalDate(), UIUtilities.getString("Id producto: "),
+                            UIUtilities.getString("Id cliente: ")))) {
+                        System.out.println("Borrada\n");
+                    } else {
+                        System.out.println("Reserva no encontrada\n");
+                    }
+                    break;
+                case 3:
+
+                    double income = controller.closeReservation(controller.searchReservationNotFinished(UIUtilities.getString("Id producto: "),
+                            UIUtilities.getString("Id cliente: ")));
+
+                    if (income == 0) {
+                        System.out.println("Reserva no encontrada");
+                    } else {
+                        System.out.println("--------------------------------\n\t--->El cliente tiene que pagar " + income + "€\n\n--------------------------------");
+                    }
+
+                default:
+
+            }
+        } while (opt < 1 || opt > 3);
 
     }
 
     public static void listarreserva() {
+        int opt;
+        do {
+            System.out.println("1. Listar todas las reservas"
+                    + "\n2. Listar todas las reservas acababas"
+                    + "\n3. Listar reservas activas"
+                    + "\n4. Listar reservas pendientes"
+                    + "\n5. Atras");
+            opt = UIUtilities.getInt("Opcion");
+            switch (opt) {
+                case 1:
+                    GUIData.ReservationToScreen(controller.listAllReservations());
+                    break;
+                case 2:
+                    GUIData.ReservationToScreen(controller.listAllReservations(Reservation.StatusReserve.FINISHED));
+                    break;
+                case 3:
+                    GUIData.ReservationToScreen(controller.listAllReservations(Reservation.StatusReserve.ACTIVE));
+                    break;
+                case 4:
+                    GUIData.ReservationToScreen(controller.listAllReservations(Reservation.StatusReserve.PENDING));
+                    break;
+                default:
 
+            }
+            UIUtilities.clearScreen();
+        } while (opt < 1 || opt > 5);
     }
 
     public static void historialReservas() {
+        GUIData.ReservationToScreen(controller.listAllReservations(UIUtilities.getString("Id cliente: ")));
 
     }
 
-    public static void listarclientes() {
+    private static void pagos() {
+        int opt;
+        do {
+            System.out.println("1. Dinero ingresado"
+                    + "\n2. Dinero ingresado desde una fecha"
+                    + "\n3. Dinero ingresado entre fechas"
+                    + "\n4. Dinero ingresado por cada cliente"
+                    + "\n5. Atras");
+            opt = UIUtilities.getInt("Opcion");
+            switch (opt) {
+                case 1:
+                    System.out.println("------------------\nDinero ingresado desde los origenes: " + controller.getIncommings() + "€\n------------------");
+                    break;
+                case 2:
+                    LocalDate date = UIUtilities.getDate("Fecha inicio", UIUtilities.defaultDateParsed).toLocalDate();
+                    if (date != null) {
+                        System.out.println("------------------\nDinero ingresado desde " + date.toString() + " :" + controller.getIncommings(date) + "€\n------------------");
+                    } else {
+                        System.out.println("Fecha no valida");
+                    }
+                    break;
+                case 3:
+                    LocalDate dateini = UIUtilities.getDate("Fecha inicio", UIUtilities.defaultDateParsed).toLocalDate();
+                    LocalDate dateend = UIUtilities.getDate("Fecha final", UIUtilities.defaultDateParsed).toLocalDate();
+                    if (dateini != null && dateend != null) {
+                        System.out.println("------------------\nDinero ingresado desde " + dateini.toString() + " hasta " + dateend.toString() + " :" + controller.getIncommings(dateini, dateend) + "€\n------------------");
+                    } else {
+                        System.out.println("Fecha no valida");
+                    }
+                    break;
+                case 4:
+                    Map<IClient, Double> map = controller.resumeAllIncomingsByClient();
+                    System.out.println("-------------------");
+                    map.forEach((c, i) -> {
+                        System.out.println("El cliente: " + c.getID() + " con nombre: " + c.getName() + " ha gastado en total: " + i + "€");
+                    });
+                    System.out.println("-------------------");
+                    break;
+                default:
 
-    }
-
-    public static void clientesreservas() {
+            }
+        } while (opt < 1 || opt > 5);
 
     }
 
