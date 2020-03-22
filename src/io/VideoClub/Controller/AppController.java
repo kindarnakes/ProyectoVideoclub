@@ -309,12 +309,12 @@ public class AppController implements IAppController {
         double result = 0;
         for (Reservation lista : reservations) {
 
-            if (lista.status == Reservation.StatusReserve.FINISHED) {
+            if (lista.status == Reservation.StatusReserve.FINISHED && (lista.finished.isAfter(from) || lista.finished.isEqual(from))) {
                 result = result + lista.pro.getPrize();
             }
         }
         return result;
-        
+
     }
 
     @Override
@@ -323,7 +323,9 @@ public class AppController implements IAppController {
         double result = 0;
         for (Reservation lista : reservations) {
 
-            if (lista.status == Reservation.StatusReserve.FINISHED) {
+            if (lista.status == Reservation.StatusReserve.FINISHED
+                    && (lista.finished.isAfter(from) || lista.finished.isEqual(from))
+                    && (lista.finished.isBefore(to) || lista.finished.isEqual(to))) {
                 result = result + lista.pro.getPrize();
             }
         }
