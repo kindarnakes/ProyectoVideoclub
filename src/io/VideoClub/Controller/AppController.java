@@ -528,6 +528,7 @@ public class AppController implements IAppController {
             if (p.getStatus() == Product.Status.AVAILABLE) {
                 p.setStatus(Product.Status.RESERVED);
                 Reservation R = new Reservation(prod, client);
+                Data.getInstance().getReservas().add(R);
                 result = true;
             }
         }
@@ -538,8 +539,8 @@ public class AppController implements IAppController {
     @Override
     public double closeReservation(Reservation r) {
         double result = 0;
-        result = r.getIncome();
         r.finish();
+        result = r.getIncome();
 
         return result;
     }
