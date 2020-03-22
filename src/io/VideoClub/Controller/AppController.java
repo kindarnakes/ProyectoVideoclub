@@ -254,17 +254,39 @@ public class AppController implements IAppController {
 
     @Override
     public Set<Reservation> listAllReservations() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Set<Reservation> reservations = Data.getInstance().getReservas();
+            Set<Reservation> aux = new TreeSet<>();
+       for(Reservation r: reservations)  {
+           aux.add(r);
+       }   
+            
+            return aux;
     }
 
     @Override
     public Set<Reservation> listAllReservations(Comparator c) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       Set<Reservation> reservations = Data.getInstance().getReservas();
+            List<Reservation> aux = new ArrayList<>() ;
+       for(Reservation r: reservations)  {
+           aux.add(r);
+       }   
+           aux.sort(c);
+          Set<Reservation> aux1 = new TreeSet<>(aux);
+          return aux1;
     }
 
     @Override
     public Set<Reservation> listAllReservations(Reservation.StatusReserve status) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       Set<Reservation> reservations = Data.getInstance().getReservas();
+            Set<Reservation> aux = new TreeSet<>();
+       for(Reservation r: reservations)  {
+           if(r.status==status){
+               aux.add(r);  
+           }
+         
+       }   
+            
+            return aux;
     }
 
     @Override
@@ -473,12 +495,27 @@ public class AppController implements IAppController {
 
     @Override
     public boolean reserveProduct(Product prod, IClient client) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean result = false;
+        Product p = SearchProduct(prod.getKey());
+        Client c = SearchClient(client.getID());
+        if (p != null && c != null) {
+            if (p.getStatus() == Product.Status.AVAILABLE) {
+                p.setStatus(Product.Status.RESERVED);
+                Reservation R = new Reservation(prod, client);
+                result = true;
+            }
+        }
+
+        return result;
     }
 
     @Override
     public double closeReservation(Reservation r) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       double result=0;
+      result= r.getIncome();
+      r.finish();
+      
+       return result;
     }
 
     @Override
