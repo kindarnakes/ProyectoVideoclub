@@ -255,53 +255,79 @@ public class AppController implements IAppController {
     @Override
     public Set<Reservation> listAllReservations() {
         Set<Reservation> reservations = Data.getInstance().getReservas();
-            Set<Reservation> aux = new TreeSet<>();
-       for(Reservation r: reservations)  {
-           aux.add(r);
-       }   
-            
-            return aux;
+        Set<Reservation> aux = new TreeSet<>();
+        for (Reservation r : reservations) {
+            aux.add(r);
+        }
+
+        return aux;
     }
 
     @Override
     public Set<Reservation> listAllReservations(Comparator c) {
-       Set<Reservation> reservations = Data.getInstance().getReservas();
-            List<Reservation> aux = new ArrayList<>() ;
-       for(Reservation r: reservations)  {
-           aux.add(r);
-       }   
-           aux.sort(c);
-          Set<Reservation> aux1 = new TreeSet<>(aux);
-          return aux1;
+        Set<Reservation> reservations = Data.getInstance().getReservas();
+        List<Reservation> aux = new ArrayList<>();
+        for (Reservation r : reservations) {
+            aux.add(r);
+        }
+        aux.sort(c);
+        Set<Reservation> aux1 = new TreeSet<>(aux);
+        return aux1;
     }
 
     @Override
     public Set<Reservation> listAllReservations(Reservation.StatusReserve status) {
-       Set<Reservation> reservations = Data.getInstance().getReservas();
-            Set<Reservation> aux = new TreeSet<>();
-       for(Reservation r: reservations)  {
-           if(r.status==status){
-               aux.add(r);  
-           }
-         
-       }   
-            
-            return aux;
+        Set<Reservation> reservations = Data.getInstance().getReservas();
+        Set<Reservation> aux = new TreeSet<>();
+        for (Reservation r : reservations) {
+            if (r.status == status) {
+                aux.add(r);
+            }
+
+        }
+
+        return aux;
     }
 
     @Override
     public double getIncommings() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Set<Reservation> reservations = Data.getInstance().getReservas();
+        double result = 0;
+        for (Reservation lista : reservations) {
+
+            if (lista.status == Reservation.StatusReserve.FINISHED) {
+                result = result + lista.pro.getPrize();
+            }
+        }
+        return result;
+
     }
 
     @Override
     public double getIncommings(LocalDate from) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Set<Reservation> reservations = Data.getInstance().getReservas();
+        double result = 0;
+        for (Reservation lista : reservations) {
+
+            if (lista.status == Reservation.StatusReserve.FINISHED) {
+                result = result + lista.pro.getPrize();
+            }
+        }
+        return result;
+        
     }
 
     @Override
     public double getIncommings(LocalDate from, LocalDate to) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Set<Reservation> reservations = Data.getInstance().getReservas();
+        double result = 0;
+        for (Reservation lista : reservations) {
+
+            if (lista.status == Reservation.StatusReserve.FINISHED) {
+                result = result + lista.pro.getPrize();
+            }
+        }
+        return result;
     }
 
     @Override
@@ -511,11 +537,11 @@ public class AppController implements IAppController {
 
     @Override
     public double closeReservation(Reservation r) {
-       double result=0;
-      result= r.getIncome();
-      r.finish();
-      
-       return result;
+        double result = 0;
+        result = r.getIncome();
+        r.finish();
+
+        return result;
     }
 
     @Override
