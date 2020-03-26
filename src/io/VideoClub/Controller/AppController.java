@@ -477,7 +477,9 @@ public class AppController implements IAppController {
         boolean removed = false;
         do {
             p = SearchProductByName(name);
-            removed = removed || data.getProductos().remove(p);
+            if (p != null) {
+                removed = removed || data.getProductos().remove(p);
+            }
         } while (p != null);
 
         return removed;
