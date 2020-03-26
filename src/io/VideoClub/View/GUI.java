@@ -220,6 +220,8 @@ public class GUI {
                     UIUtilities.clearScreen();
                     pagos();
                     break;
+                case 6:
+                    break;
                 default:
                     System.out.println("opcion erronea, vuelva a intentarlo");
 

@@ -356,7 +356,7 @@ public class AppController implements IAppController {
 
     @Override
     public boolean createProduct(String name, String description, double prize) {
-        Other o = new Other(name, Product.Status.AVAILABLE, ProductsTypes.Otros, name, description, prize);
+        Other o = new Other(name, description, prize, Product.Status.AVAILABLE);
 
         return Data.getInstance().getProductos().add(o);
 
@@ -486,10 +486,12 @@ public class AppController implements IAppController {
     public boolean removeUniqueProduct(String id) {
         Product p;
         Data data = Data.getInstance();
-        boolean removed;
+        boolean removed = false;
 
         p = SearchProduct(id);
-        removed = data.getProductos().remove(p);
+        if (p != null) {
+            removed = data.getProductos().remove(p);
+        }
 
         return removed;
     }
