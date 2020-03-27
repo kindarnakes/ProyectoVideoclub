@@ -652,7 +652,11 @@ public class AppController implements IAppController {
     }
 
     public boolean removeReservation(Reservation r) {
-        return Data.getInstance().getReservas().remove(r);
+        if (r != null) {
+            return Data.getInstance().getReservas().remove(r);
+        }else{
+            return false;
+        }
     }
 
     public Reservation searchReservation(LocalDate ini, String productId, String clientId) {
