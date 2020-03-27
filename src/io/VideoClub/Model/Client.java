@@ -67,6 +67,13 @@ public String GenerateId(){
     public void setPhone(String p) {
        this.phone=p;
     }
+    
+    public void setRemoved(){
+        this.iD = "BORRADO";
+        this.name = "BORRADO";
+        this.phone = "";
+        this.time = LocalDateTime.MIN;
+    }
 
   
 

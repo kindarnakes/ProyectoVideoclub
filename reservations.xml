@@ -40,4 +40,12 @@
         <datefinish/>
         <status>PENDING</status>
     </Reservation>
+    <Reservation>
+        <clientid>BORRADO</clientid>
+        <productkey>5476be2f-49e6-48</productkey>
+        <dateini>2020-03-19</dateini>
+        <dateend>2020-03-24</dateend>
+        <datefinish>2020-03-21</datefinish>
+        <status>FINISHED</status>
+    </Reservation>
 </Reservations>

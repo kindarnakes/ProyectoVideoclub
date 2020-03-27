@@ -31,6 +31,15 @@
         <name>2</name>
         <description>2</description>
         <prize>1.0</prize>
+        <status>REMOVED</status>
+        <key>5476be2f-49e6-48</key>
+    </Movie>
+    <Movie>
+        <movie_category>Horror</movie_category>
+        <min_age>18</min_age>
+        <name>2</name>
+        <description>2</description>
+        <prize>1.0</prize>
         <status>AVAILABLE</status>
         <key>5476be2f-49e6-46</key>
     </Movie>

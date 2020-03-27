@@ -259,7 +259,7 @@ public class GUI {
                 pantalla = "No se ha podido borrar";
             }
         } else {
-            pantalla = "-> Id erronea";
+            pantalla = "-> Id erronea o tiene una reserva no acabada";
         }
         System.out.println(pantalla);
     }

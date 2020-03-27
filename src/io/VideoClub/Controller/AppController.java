@@ -54,14 +54,24 @@ public class AppController implements IAppController {
 
     @Override
     public Set<Product> listAllProducts() {
-        return Data.getInstance().getProductos();
+        Set<Product> aux = new TreeSet<>();
+        for (Product p : Data.getInstance().getProductos()) {
+            if (p.getStatus() != Product.Status.REMOVED) {
+                aux.add(p);
+            }
+        }
+        return aux;
     }
 
     @Override
     public Set<Product> listAllProducts(Comparator c) {
 
-        TreeSet<Product> aux = (TreeSet) Data.getInstance().getProductos();
-        aux = (TreeSet) aux.clone();
+        Set<Product> aux = new TreeSet<>();
+        for (Product p : Data.getInstance().getProductos()) {
+            if (p.getStatus() != Product.Status.REMOVED) {
+                aux.add(p);
+            }
+        }
         ArrayList<Product> aux2 = new ArrayList<>(aux);
         Collections.sort(aux2, c);
         aux = new TreeSet<>(aux2);
@@ -76,7 +86,7 @@ public class AppController implements IAppController {
         Set<Product> aux = new TreeSet<>();
 
         data.forEach((lista) -> {
-            if (lista.getType() == type) {
+            if (lista.getType() == type && lista.getStatus() != Product.Status.REMOVED) {
                 aux.add(lista);
 
             }
@@ -90,7 +100,7 @@ public class AppController implements IAppController {
         Set<Product> data = Data.getInstance().getProductos();
         Set<Product> aux = new TreeSet<>();
         for (Product lista : data) {
-            if (lista.getName().equals(name)) {
+            if (lista.getName().equals(name) && lista.getStatus() != Product.Status.REMOVED) {
                 aux.add(lista);
 
             }
@@ -105,7 +115,7 @@ public class AppController implements IAppController {
         Set<Product> data = Data.getInstance().getProductos();
         Set<Product> aux = new TreeSet<>();
         for (Product lista : data) {
-            if (lista.getType() == type && lista.getName().equals(name)) {
+            if (lista.getType() == type && lista.getName().equals(name) && lista.getStatus() != Product.Status.REMOVED) {
                 aux.add(lista);
             }
 
@@ -118,7 +128,7 @@ public class AppController implements IAppController {
         Set<Product> data = Data.getInstance().getProductos();
         Set<Product> aux = new TreeSet<>();
         for (Product lista : data) {
-            if (lista.getStatus() == status) {
+            if (lista.getStatus() == status && lista.getStatus() != Product.Status.REMOVED) {
                 aux.add(lista);
 
             }
@@ -144,7 +154,7 @@ public class AppController implements IAppController {
         Set<Product> data = Data.getInstance().getProductos();
         TreeSet<Movie> aux = new TreeSet<>(new ProductNameComparator());
         for (Product p : data) {
-            if (p instanceof Movie) {
+            if (p instanceof Movie && p.getStatus() != Product.Status.REMOVED) {
                 aux.add((Movie) p);
             }
         }
@@ -157,7 +167,7 @@ public class AppController implements IAppController {
         Set<Product> data = Data.getInstance().getProductos();
         TreeSet<Game> aux = new TreeSet<>(new ProductNameComparator());
         for (Product p : data) {
-            if (p instanceof Game) {
+            if (p instanceof Game && p.getStatus() != Product.Status.REMOVED) {
                 aux.add((Game) p);
             }
         }
@@ -173,7 +183,7 @@ public class AppController implements IAppController {
         TreeMap<Product, Integer> aux = new TreeMap<>();
 
         for (Product p : data) {
-            if (p.getName().equals(name)) {
+            if (p.getName().equals(name) && p.getStatus() != Product.Status.REMOVED) {
                 if (p1 == null) {
                     p1 = p;
                 }
@@ -196,7 +206,7 @@ public class AppController implements IAppController {
         TreeMap<Product, Integer> aux = new TreeMap<>();
 
         for (Product p : data) {
-            if (p.getName().equals(name) && p.getType() == type) {
+            if (p.getName().equals(name) && p.getType() == type && p.getStatus() != Product.Status.REMOVED) {
                 if (p1 == null) {
                     p1 = p;
                 }
@@ -213,14 +223,24 @@ public class AppController implements IAppController {
 
     @Override
     public Set<IClient> listAllClients() {
-        return Data.getInstance().getClientes();
+        Set<IClient> aux = new TreeSet<>();
+        for (IClient c : Data.getInstance().getClientes()) {
+            if (!c.getName().equals("BORRADO")) {
+                aux.add(c);
+            }
+        }
+        return aux;
 
     }
 
     @Override
     public Set<IClient> listAllClients(Comparator c) {
-        TreeSet<IClient> aux = (TreeSet) Data.getInstance().getClientes();
-        aux = (TreeSet) aux.clone();
+        Set<IClient> aux = new TreeSet<>();
+        for (IClient cli : Data.getInstance().getClientes()) {
+            if (!cli.getName().equals("BORRADO")) {
+                aux.add(cli);
+            }
+        }
         ArrayList<IClient> aux2 = new ArrayList<>(aux);
         Collections.sort(aux2, c);
         aux = new TreeSet<>(aux2);
@@ -391,9 +411,16 @@ public class AppController implements IAppController {
         boolean result = false;
         Set<IClient> A = Data.getInstance().getClientes();
         for (IClient a : A) {
-            if (a.getID().equals(id)) {
-
-                result = A.remove(a);
+            boolean reservationnotFinished = false;
+            for (Reservation r : Data.getInstance().getReservas()) {
+                if (r.cli.equals(a) && r.finished == null) {
+                    reservationnotFinished = true;
+                }
+            }
+            if (a.getID().equals(id) && !reservationnotFinished) {
+                Client c = (Client) a;
+                c.setRemoved();
+                result = true;
                 break;
             }
 
@@ -473,12 +500,19 @@ public class AppController implements IAppController {
     @Override
     public boolean removeProduct(String name) {
         Product p;
-        Data data = Data.getInstance();
         boolean removed = false;
         do {
             p = SearchProductByName(name);
             if (p != null) {
-                removed = removed || data.getProductos().remove(p);
+                boolean reservationnotFinished = false;
+                for (Reservation r : Data.getInstance().getReservas()) {
+                    if (r.pro.equals(p) && r.finished == null) {
+                        reservationnotFinished = true;
+                    }
+                }
+                if (!reservationnotFinished) {
+                    removed = removed || p.setRemoved();
+                }
             }
         } while (p != null);
 
@@ -487,12 +521,19 @@ public class AppController implements IAppController {
 
     public boolean removeUniqueProduct(String id) {
         Product p;
-        Data data = Data.getInstance();
         boolean removed = false;
 
         p = SearchProduct(id);
         if (p != null) {
-            removed = data.getProductos().remove(p);
+            boolean reservationnotFinished = false;
+            for (Reservation r : Data.getInstance().getReservas()) {
+                if (r.pro.equals(p) && r.finished == null) {
+                    reservationnotFinished = true;
+                }
+            }
+            if (!reservationnotFinished) {
+                removed = p.setRemoved();
+            }
         }
 
         return removed;
@@ -674,6 +715,9 @@ public class AppController implements IAppController {
                         case "RESERVED":
                             statusfilm = Product.Status.RESERVED;
                             break;
+                        case "REMOVED":
+                            statusfilm = Product.Status.REMOVED;
+                            break;
                         default:
                             statusfilm = null;
                     }
@@ -720,6 +764,9 @@ public class AppController implements IAppController {
                         case "RESERVED":
                             statusgame = Product.Status.RESERVED;
                             break;
+                        case "REMOVED":
+                            statusgame = Product.Status.REMOVED;
+                            break;
                         default:
                             statusgame = null;
                     }
@@ -748,6 +795,9 @@ public class AppController implements IAppController {
                             break;
                         case "RESERVED":
                             statusother = Product.Status.RESERVED;
+                            break;
+                        case "REMOVED":
+                            statusother = Product.Status.REMOVED;
                             break;
                         default:
                             statusother = null;

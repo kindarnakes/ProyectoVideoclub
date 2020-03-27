@@ -12,7 +12,8 @@ public abstract class Product extends Item implements Cloneable, Comparable<Obje
 
     public enum Status {
         AVAILABLE,
-        RESERVED
+        RESERVED,
+        REMOVED
     }
     private String key;
     private Status status;
@@ -33,6 +34,7 @@ public abstract class Product extends Item implements Cloneable, Comparable<Obje
     public void setStatus(Status status) {
         this.status = status;
     }
+
     public Product() {
     }
 
@@ -87,6 +89,15 @@ public abstract class Product extends Item implements Cloneable, Comparable<Obje
         this.name = name;
     }
 
+    public boolean setRemoved() {
+        boolean removed = false;
+        if (this.status != Status.RESERVED) {
+            this.status = Status.REMOVED;
+            removed = true;
+        }
+        return removed;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -110,8 +121,6 @@ public abstract class Product extends Item implements Cloneable, Comparable<Obje
     public void setType(ProductsTypes type) {
         this.type = type;
     }
-    
-    
 
     @Override
     public int compareTo(Object o) {
