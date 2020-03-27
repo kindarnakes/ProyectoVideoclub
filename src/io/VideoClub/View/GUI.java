@@ -24,8 +24,6 @@ public class GUI {
             System.out.println("\n"
                     + "Error en la carga de datos"
                     + "\n\n\n");
-
-            load = true;
         }
         int opciones;
         do {
@@ -69,6 +67,7 @@ public class GUI {
                         load = true;
                         break;
                     case 'n':
+                        load = true;
                         break;
                     default:
                         System.out.println("Opcion incorrecta");
