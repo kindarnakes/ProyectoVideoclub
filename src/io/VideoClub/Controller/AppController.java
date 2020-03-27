@@ -141,7 +141,9 @@ public class AppController implements IAppController {
         Set<Product> data = Data.getInstance().getProductos();
         TreeSet<Product> aux = new TreeSet<>(new ProductNameComparator());
         for (Product lista : data) {
-            aux.add(lista);
+            if (lista.getStatus() != Product.Status.REMOVED) {
+                aux.add(lista);
+            }
         }
         ArrayList<Product> listaProductos = new ArrayList<>(aux);
 
@@ -505,13 +507,21 @@ public class AppController implements IAppController {
             p = SearchProductByName(name);
             if (p != null) {
                 boolean reservationnotFinished = false;
+                boolean isinreservation = false;
                 for (Reservation r : Data.getInstance().getReservas()) {
-                    if (r.pro.equals(p) && r.finished == null) {
+                    if (r.pro.equals(p) && r.finished == null) {//buscamos si esta en alguna reserva no acabada
                         reservationnotFinished = true;
+                    }
+                    if (r.pro.equals(p)) {//buscamos si esta en alguna reserva
+                        isinreservation = true;
                     }
                 }
                 if (!reservationnotFinished) {
-                    removed = removed || p.setRemoved();
+                    if (!isinreservation) { //si no esta en ninguna reserva
+                        removed = removed || Data.getInstance().getProductos().remove(p);
+                    } else {
+                        removed = removed || p.setRemoved();
+                    }
                 }
             }
         } while (p != null);
@@ -526,13 +536,21 @@ public class AppController implements IAppController {
         p = SearchProduct(id);
         if (p != null) {
             boolean reservationnotFinished = false;
-            for (Reservation r : Data.getInstance().getReservas()) {
+            boolean isinreservation = false;
+            for (Reservation r : Data.getInstance().getReservas()) {//buscamos si esta en alguna reserva no acabada
                 if (r.pro.equals(p) && r.finished == null) {
                     reservationnotFinished = true;
                 }
+                if (r.pro.equals(p)) {//buscamos si esta en alguna reserva
+                    isinreservation = true;
+                }
             }
             if (!reservationnotFinished) {
-                removed = p.setRemoved();
+                if (!isinreservation) { //si no esta en ninguna reserva
+                    removed = removed || Data.getInstance().getProductos().remove(p);
+                } else {
+                    removed = removed || p.setRemoved();
+                }
             }
         }
 

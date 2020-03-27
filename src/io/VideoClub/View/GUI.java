@@ -467,14 +467,14 @@ public class GUI {
             switch (opt) {
                 case 1:
                     if (!controller.removeUniqueProduct(UIUtilities.getString("Id del producto"))) {
-                        System.out.println("-> Id erronea");
+                        System.out.println("-> Id erronea o tiene una reserva no acabada");
                     } else {
                         System.out.println("Eliminado");
                     }
                     break;
                 case 2:
                     if (!controller.removeProduct(UIUtilities.getString("Nombre de la familia"))) {
-                        System.out.println("-> Nombre erroneo");
+                        System.out.println("-> Nombre erroneo o reservas no acabadas");
                     } else {
                         System.out.println("Familia eliminada");
                     }
