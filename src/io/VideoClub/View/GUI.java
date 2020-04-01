@@ -497,20 +497,22 @@ public class GUI {
                 if (reserved) {
                     GUIReservation.Show(controller.searchReservation(LocalDate.now(), p.getKey(), c.getID()));
                     System.out.println("Reserva completada");
-                } else {
-                    System.out.println("Fallo en la reserva");
-                    char ok = UIUtilities.getChar("¿Desea volver a intentar? [y/n]");
-                    switch (ok) {
-                        case 'y':
-                            reserved = false;
-                            break;
-                        case 'n':
-                            reserved = true;
-                            break;
-                        default:
-                            reserved = false;
-                    }
                 }
+            }
+            if (!reserved) {
+                System.out.println("Fallo en la reserva");
+                char ok = UIUtilities.getChar("¿Desea volver a intentar? [y/n]");
+                switch (ok) {
+                    case 'y':
+                        reserved = false;
+                        break;
+                    case 'n':
+                        reserved = true;
+                        break;
+                    default:
+                        reserved = false;
+                }
+
             }
         } while (!reserved);
 
@@ -553,9 +555,10 @@ public class GUI {
                     }
 
                 default:
+                    
 
             }
-        } while (opt < 1 || opt > 3);
+        } while (opt < 1 || opt > 4);
 
     }
 
